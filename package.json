@@ -1,0 +1,30 @@
+{
+  "name": "aaos",
+  "version": "1.0.0",
+  "private": true,
+  "description": "AI Automation Agency OS — White-label SaaS platform",
+  "engines": {
+    "node": ">=20.0.0",
+    "pnpm": ">=9.0.0"
+  },
+  "scripts": {
+    "build": "turbo run build",
+    "dev": "turbo run dev",
+    "lint": "turbo run lint",
+    "format": "prettier --write \"**/*.{ts,tsx,js,json,md}\"",
+    "type-check": "turbo run type-check",
+    "db:generate": "turbo run db:generate",
+    "db:migrate": "turbo run db:migrate",
+    "db:push": "pnpm --filter @aaos/db db:push",
+    "db:seed": "pnpm --filter @aaos/db seed",
+    "db:studio": "pnpm --filter @aaos/db db:studio",
+    "clean": "turbo run clean && find . -name 'node_modules' -type d -prune -exec rm -rf '{}' +"
+  },
+  "devDependencies": {
+    "turbo": "^2.0.0",
+    "prettier": "^3.2.0",
+    "@aaos/eslint-config": "workspace:*",
+    "@aaos/typescript-config": "workspace:*"
+  },
+  "packageManager": "pnpm@9.0.0"
+}

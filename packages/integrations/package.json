@@ -1,0 +1,21 @@
+{
+  "name": "@aaos/integrations",
+  "version": "0.1.0",
+  "private": true,
+  "main": "./src/index.ts",
+  "types": "./src/index.ts",
+  "scripts": {
+    "typecheck": "tsc --noEmit"
+  },
+  "dependencies": {
+    "@aaos/types": "workspace:*",
+    "stripe": "^15.7.0",
+    "telnyx": "^2.0.0-alpha.31",
+    "resend": "^3.3.0",
+    "zod": "^3.23.8"
+  },
+  "devDependencies": {
+    "@aaos/typescript-config": "workspace:*",
+    "typescript": "^5.4.5"
+  }
+}

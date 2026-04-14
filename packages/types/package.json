@@ -1,0 +1,13 @@
+{
+  "name": "@aaos/types",
+  "version": "0.0.1",
+  "private": true,
+  "exports": {
+    ".": "./src/index.ts"
+  },
+  "devDependencies": {
+    "typescript": "^5.4.0",
+    "@aaos/typescript-config": "workspace:*"
+  },
+  "tsconfig": { "extends": "@aaos/typescript-config/base.json" }
+}

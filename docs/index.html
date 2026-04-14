@@ -1,0 +1,184 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Ai-Franchise System Pages</title>
+    <style>
+      :root {
+        --api: #0284c7;
+        --web: #16a34a;
+        --worker: #ea580c;
+        --data: #334155;
+        --bg: #f8fafc;
+        --text: #0f172a;
+      }
+      body {
+        margin: 0;
+        font-family: Segoe UI, system-ui, -apple-system, sans-serif;
+        background: linear-gradient(160deg, #f8fafc, #e2e8f0);
+        color: var(--text);
+      }
+      header {
+        padding: 2rem 1rem 1rem;
+        text-align: center;
+      }
+      h1 {
+        margin: 0;
+        font-size: clamp(1.8rem, 5vw, 2.8rem);
+      }
+      .sub {
+        margin-top: 0.6rem;
+        color: #334155;
+      }
+      .legend {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 0.6rem;
+        justify-content: center;
+        margin: 1rem auto 0;
+      }
+      .chip {
+        border-radius: 999px;
+        padding: 0.35rem 0.85rem;
+        font-size: 0.9rem;
+        color: white;
+      }
+      .api { background: var(--api); }
+      .web { background: var(--web); }
+      .worker { background: var(--worker); }
+      .data { background: var(--data); }
+
+      main {
+        max-width: 1100px;
+        margin: 0 auto;
+        padding: 1rem;
+      }
+      .card {
+        background: white;
+        border: 1px solid #cbd5e1;
+        border-radius: 14px;
+        padding: 1rem;
+        box-shadow: 0 6px 20px rgba(2, 8, 23, 0.05);
+        margin-bottom: 1rem;
+      }
+      .toc a {
+        display: inline-block;
+        margin: 0.2rem 0.4rem 0.2rem 0;
+        color: #0f172a;
+        text-decoration: none;
+        border-bottom: 1px dashed #64748b;
+      }
+      .toc a:hover {
+        color: var(--api);
+      }
+      pre {
+        overflow-x: auto;
+        border: 1px solid #e2e8f0;
+        border-radius: 10px;
+        padding: 0.8rem;
+        background: #f8fafc;
+      }
+      footer {
+        text-align: center;
+        padding: 2rem 1rem;
+        color: #475569;
+      }
+    </style>
+    <script type="module">
+      import mermaid from "https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.esm.min.mjs";
+      mermaid.initialize({ startOnLoad: true, theme: "base" });
+    </script>
+  </head>
+  <body>
+    <header>
+      <h1>Ai-Franchise System Pages</h1>
+      <p class="sub">Color-coded architecture, table of contents, and operational flow charts.</p>
+      <div class="legend">
+        <span class="chip web">Web Surfaces</span>
+        <span class="chip api">API Layer</span>
+        <span class="chip worker">Worker Automation</span>
+        <span class="chip data">Data & Infra</span>
+      </div>
+    </header>
+
+    <main>
+      <section class="card toc" id="toc">
+        <h2>Table of Contents</h2>
+        <a href="#architecture">Architecture</a>
+        <a href="#lead-flow">Lead Flow</a>
+        <a href="#billing-flow">Billing Flow</a>
+        <a href="#services">Service Endpoints</a>
+      </section>
+
+      <section class="card" id="architecture">
+        <h2>System Architecture</h2>
+        <div class="mermaid">
+flowchart LR
+  A[Agency Dashboard :3000]:::web --> D[Fastify API :3001]:::api
+  B[Client Portal :3002]:::web --> D
+  C[Landing Site :3003]:::web --> A
+  D --> E[(PostgreSQL)]:::data
+  D --> F[(Redis)]:::data
+  G[Worker Runtime]:::worker --> E
+  G --> F
+  G --> H[OpenAI]:::api
+  G --> I[Telnyx]:::api
+  G --> J[Resend]:::api
+
+  classDef web fill:#DCFCE7,stroke:#16A34A,color:#14532D
+  classDef api fill:#E0F2FE,stroke:#0284C7,color:#0C4A6E
+  classDef worker fill:#FFEDD5,stroke:#EA580C,color:#7C2D12
+  classDef data fill:#E2E8F0,stroke:#334155,color:#0F172A
+        </div>
+      </section>
+
+      <section class="card" id="lead-flow">
+        <h2>Lead Intake and AI Response Flow</h2>
+        <div class="mermaid">
+flowchart TD
+  S[Lead arrives] --> V{Valid request?}
+  V -- no --> X[Reject + log]
+  V -- yes --> C[Create lead + conversation]
+  C --> Q[Queue jobs]
+  Q --> W[Workers execute]
+  W --> R[Generate AI response]
+  R --> T[Send SMS/Email]
+  T --> U[Update status + analytics]
+        </div>
+      </section>
+
+      <section class="card" id="billing-flow">
+        <h2>Billing Flow</h2>
+        <div class="mermaid">
+sequenceDiagram
+  participant Owner
+  participant Web
+  participant API
+  participant Stripe
+  Owner->>Web: Choose plan
+  Web->>API: Create checkout session
+  API->>Stripe: Build session
+  Stripe-->>Web: Hosted checkout URL
+  Owner->>Stripe: Complete payment
+  Stripe->>API: Webhook (subscription active)
+  API-->>Web: Updated billing status
+        </div>
+      </section>
+
+      <section class="card" id="services">
+        <h2>Service Endpoints</h2>
+        <pre>
+Agency Dashboard : http://localhost:3000
+API             : http://localhost:3001
+Client Portal   : http://localhost:3002
+Landing Site    : http://localhost:3003
+        </pre>
+      </section>
+    </main>
+
+    <footer>
+      Ai-Franchise Pages - generated system documentation site
+    </footer>
+  </body>
+</html>
