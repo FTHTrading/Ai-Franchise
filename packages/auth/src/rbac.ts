@@ -3,9 +3,9 @@ import type { UserRole, Permission } from '@aaos/types';
 // ─── Permission matrix ──────────────────────
 
 const ROLE_PERMISSIONS: Record<UserRole, Permission[]> = {
-  SUPER_ADMIN: ['admin:all', 'leads:read', 'leads:write', 'leads:delete', 'conversations:read', 'conversations:write', 'workflows:read', 'workflows:write', 'workflows:publish', 'clients:read', 'clients:write', 'clients:delete', 'billing:read', 'billing:write', 'analytics:read', 'settings:read', 'settings:write', 'templates:read', 'templates:write'],
-  ORGANIZATION_OWNER: ['leads:read', 'leads:write', 'leads:delete', 'conversations:read', 'conversations:write', 'workflows:read', 'workflows:write', 'workflows:publish', 'clients:read', 'clients:write', 'clients:delete', 'billing:read', 'billing:write', 'analytics:read', 'settings:read', 'settings:write', 'templates:read', 'templates:write'],
-  ORGANIZATION_ADMIN: ['leads:read', 'leads:write', 'conversations:read', 'conversations:write', 'workflows:read', 'workflows:write', 'clients:read', 'clients:write', 'analytics:read', 'settings:read', 'templates:read', 'templates:write'],
+  SUPER_ADMIN: ['admin:all', 'team:invite', 'leads:read', 'leads:write', 'leads:delete', 'conversations:read', 'conversations:write', 'workflows:read', 'workflows:write', 'workflows:create', 'workflows:delete', 'workflows:publish', 'clients:read', 'clients:write', 'clients:delete', 'billing:read', 'billing:write', 'analytics:read', 'settings:read', 'settings:write', 'templates:read', 'templates:write'],
+  ORGANIZATION_OWNER: ['team:invite', 'leads:read', 'leads:write', 'leads:delete', 'conversations:read', 'conversations:write', 'workflows:read', 'workflows:write', 'workflows:create', 'workflows:delete', 'workflows:publish', 'clients:read', 'clients:write', 'clients:delete', 'billing:read', 'billing:write', 'analytics:read', 'settings:read', 'settings:write', 'templates:read', 'templates:write'],
+  ORGANIZATION_ADMIN: ['team:invite', 'leads:read', 'leads:write', 'conversations:read', 'conversations:write', 'workflows:read', 'workflows:write', 'workflows:create', 'workflows:delete', 'clients:read', 'clients:write', 'analytics:read', 'settings:read', 'templates:read', 'templates:write'],
   OPERATOR: ['leads:read', 'leads:write', 'conversations:read', 'conversations:write', 'workflows:read', 'clients:read', 'analytics:read', 'templates:read'],
   CLIENT_ADMIN: ['leads:read', 'conversations:read', 'analytics:read', 'settings:read'],
   CLIENT_USER: ['leads:read', 'conversations:read'],

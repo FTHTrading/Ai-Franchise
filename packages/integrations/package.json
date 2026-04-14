@@ -9,6 +9,7 @@
   },
   "dependencies": {
     "@aaos/types": "workspace:*",
+    "@aws-sdk/s3-request-presigner": "^3.806.0",
     "stripe": "^15.7.0",
     "telnyx": "^2.0.0-alpha.31",
     "resend": "^3.3.0",

@@ -33,7 +33,7 @@ export async function buildApp() {
   // Core plugins
   await app.register(helmet, { contentSecurityPolicy: false });
   await app.register(cors, {
-    origin: env.NODE_ENV === 'production' ? [env.APP_URL] : true,
+    origin: env.NODE_ENV === 'production' ? [env.API_URL] : true,
     credentials: true,
   });
   await app.register(sensible);
@@ -70,7 +70,7 @@ async function start() {
   const app = await buildApp();
 
   try {
-    await app.listen({ port: env.API_PORT ?? 3001, host: '0.0.0.0' });
+    await app.listen({ port: 3001, host: '0.0.0.0' });
   } catch (err) {
     app.log.error(err);
     process.exit(1);

@@ -23,6 +23,7 @@ export interface AuthContext {
 }
 
 export type Permission =
+  | 'team:invite'
   | 'leads:read'
   | 'leads:write'
   | 'leads:delete'
@@ -30,6 +31,8 @@ export type Permission =
   | 'conversations:write'
   | 'workflows:read'
   | 'workflows:write'
+  | 'workflows:create'
+  | 'workflows:delete'
   | 'workflows:publish'
   | 'clients:read'
   | 'clients:write'
