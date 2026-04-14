@@ -1,4 +1,46 @@
+import { existsSync } from 'node:fs';
+import { dirname, resolve } from 'node:path';
+import { config as loadDotEnv } from 'dotenv';
 import { z } from 'zod';
+
+let envLoaded = false;
+
+function loadEnvFromWorkspace() {
+  if (envLoaded) return;
+
+  let currentDir = process.cwd();
+
+  while (true) {
+    const envPath = resolve(currentDir, '.env');
+    const envLocalPath = resolve(currentDir, '.env.local');
+
+    if (existsSync(envPath) || existsSync(envLocalPath)) {
+      if (existsSync(envPath)) {
+        loadDotEnv({ path: envPath });
+      }
+      if (existsSync(envLocalPath)) {
+        loadDotEnv({ path: envLocalPath, override: true });
+      }
+      break;
+    }
+
+    const parentDir = dirname(currentDir);
+    if (parentDir === currentDir) {
+      break;
+    }
+    currentDir = parentDir;
+  }
+
+  envLoaded = true;
+}
+
+function applyDevelopmentDefaults() {
+  const nodeEnv = process.env.NODE_ENV ?? 'development';
+
+  if (nodeEnv !== 'production' && !process.env.ENCRYPTION_KEY) {
+    process.env.ENCRYPTION_KEY = 'local-development-encryption-key-32chars';
+  }
+}
 
 // Server-side environment variables (never sent to browser)
 const serverEnvSchema = z.object({
@@ -57,6 +99,9 @@ let _serverEnv: ServerEnv | undefined;
 
 export function getServerEnv(): ServerEnv {
   if (_serverEnv) return _serverEnv;
+
+  loadEnvFromWorkspace();
+  applyDevelopmentDefaults();
 
   const parsed = serverEnvSchema.safeParse(process.env);
 

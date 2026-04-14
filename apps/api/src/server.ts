@@ -23,10 +23,7 @@ export async function buildApp() {
   const env = getServerEnv();
 
   const app = Fastify({
-    logger:
-      env.NODE_ENV === 'production'
-        ? true
-        : { transport: { target: 'pino-pretty', options: { colorize: true } } },
+    logger: true,
     trustProxy: true,
   });
 
