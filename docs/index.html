@@ -1,118 +1,338 @@
 <!doctype html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Ai-Franchise System Pages</title>
-    <style>
-      :root {
-        --api: #0284c7;
-        --web: #16a34a;
-        --worker: #ea580c;
-        --data: #334155;
-        --bg: #f8fafc;
-        --text: #0f172a;
-      }
-      body {
-        margin: 0;
-        font-family: Segoe UI, system-ui, -apple-system, sans-serif;
-        background: linear-gradient(160deg, #f8fafc, #e2e8f0);
-        color: var(--text);
-      }
-      header {
-        padding: 2rem 1rem 1rem;
-        text-align: center;
-      }
-      h1 {
-        margin: 0;
-        font-size: clamp(1.8rem, 5vw, 2.8rem);
-      }
-      .sub {
-        margin-top: 0.6rem;
-        color: #334155;
-      }
-      .legend {
-        display: flex;
-        flex-wrap: wrap;
-        gap: 0.6rem;
-        justify-content: center;
-        margin: 1rem auto 0;
-      }
-      .chip {
-        border-radius: 999px;
-        padding: 0.35rem 0.85rem;
-        font-size: 0.9rem;
-        color: white;
-      }
-      .api { background: var(--api); }
-      .web { background: var(--web); }
-      .worker { background: var(--worker); }
-      .data { background: var(--data); }
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ScaleLogix AI &#x2014; Own Your AI Franchise</title>
+<meta name="description" content="Partner with ScaleLogix to launch your own AI automation agency. 50+ launches, $15M+ client revenue, proven systems. Own 100% of your agency.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --navy:#070b14;--navy2:#0d1525;--navy3:#111d35;
+  --blue:#2563eb;--blue-l:#3b82f6;--cyan:#06b6d4;
+  --green:#22c55e;--gold:#f59e0b;
+  --text:#f1f5f9;--muted:#94a3b8;--border:rgba(255,255,255,0.08);
+  --glow:rgba(37,99,235,0.35);
+}
+html{scroll-behavior:smooth}
+body{font-family:'Inter',system-ui,sans-serif;background:var(--navy);color:var(--text);line-height:1.6;-webkit-font-smoothing:antialiased}
+/* NAV */
+nav{position:sticky;top:0;z-index:100;display:flex;align-items:center;justify-content:space-between;padding:.9rem 2rem;background:rgba(7,11,20,.85);backdrop-filter:blur(16px);border-bottom:1px solid var(--border)}
+.nav-logo{font-weight:800;font-size:1.15rem;letter-spacing:-.02em}
+.nav-logo span{color:var(--blue-l)}
+.nav-links{display:flex;gap:1.8rem;list-style:none}
+.nav-links a{color:var(--muted);text-decoration:none;font-size:.9rem;font-weight:500;transition:color .2s}
+.nav-links a:hover{color:var(--text)}
+.nav-cta{background:var(--blue);color:#fff;padding:.5rem 1.2rem;border-radius:8px;text-decoration:none;font-size:.875rem;font-weight:600;transition:background .2s,transform .15s}
+.nav-cta:hover{background:var(--blue-l);transform:translateY(-1px)}
+/* HERO */
+.hero{position:relative;overflow:hidden;padding:6rem 2rem 5rem;text-align:center;background:radial-gradient(ellipse 80% 60% at 50% 0%,rgba(37,99,235,.18) 0%,transparent 70%),linear-gradient(180deg,var(--navy) 0%,var(--navy2) 100%)}
+.hero-badge{display:inline-block;background:rgba(37,99,235,.15);border:1px solid rgba(59,130,246,.35);color:var(--blue-l);padding:.35rem 1rem;border-radius:999px;font-size:.8rem;font-weight:600;letter-spacing:.06em;text-transform:uppercase;margin-bottom:1.6rem}
+.hero h1{font-size:clamp(2.4rem,6vw,4.2rem);font-weight:900;line-height:1.1;letter-spacing:-.03em;max-width:820px;margin:0 auto 1.4rem}
+.hero h1 .accent{color:var(--blue-l)}
+.hero-sub{font-size:clamp(1rem,2.2vw,1.2rem);color:var(--muted);max-width:580px;margin:0 auto 2.4rem;font-weight:400}
+.hero-btns{display:flex;gap:1rem;justify-content:center;flex-wrap:wrap}
+.btn-primary{background:var(--blue);color:#fff;padding:.85rem 2rem;border-radius:10px;text-decoration:none;font-weight:700;font-size:1rem;transition:all .2s;box-shadow:0 0 32px var(--glow)}
+.btn-primary:hover{background:var(--blue-l);transform:translateY(-2px);box-shadow:0 4px 40px var(--glow)}
+.btn-ghost{background:transparent;color:var(--text);padding:.85rem 2rem;border-radius:10px;text-decoration:none;font-weight:600;font-size:1rem;border:1px solid var(--border);transition:all .2s}
+.btn-ghost:hover{border-color:rgba(255,255,255,.25);background:rgba(255,255,255,.04)}
+/* STATS */
+.stat-strip{display:grid;grid-template-columns:repeat(auto-fit,minmax(170px,1fr));border-top:1px solid var(--border);border-bottom:1px solid var(--border);background:var(--navy2)}
+.stat-item{padding:1.8rem 1rem;text-align:center;border-right:1px solid var(--border)}
+.stat-item:last-child{border-right:none}
+.stat-num{font-size:2.2rem;font-weight:900;letter-spacing:-.04em;line-height:1}
+.stat-num.blue{color:var(--blue-l)}.stat-num.green{color:var(--green)}.stat-num.gold{color:var(--gold)}.stat-num.cyan{color:var(--cyan)}
+.stat-label{font-size:.8rem;color:var(--muted);margin-top:.4rem;font-weight:500}
+/* SECTIONS */
+section{padding:5rem 2rem}
+.container{max-width:1120px;margin:0 auto}
+.section-tag{display:inline-block;font-size:.75rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--blue-l);margin-bottom:.8rem}
+.section-title{font-size:clamp(1.75rem,4vw,2.8rem);font-weight:800;letter-spacing:-.03em;line-height:1.15;margin-bottom:1rem}
+.section-sub{color:var(--muted);font-size:1.05rem;max-width:600px}
+/* OPPORTUNITY */
+.opp{background:var(--navy2)}
+.opp-grid{display:grid;grid-template-columns:1fr 1fr;gap:2rem;margin-top:3rem;align-items:center}
+.opp-copy p{color:var(--muted);margin-bottom:1rem;line-height:1.8}
+.opp-cards{display:flex;flex-direction:column;gap:1rem}
+.opp-card{background:var(--navy3);border:1px solid var(--border);border-radius:14px;padding:1.4rem 1.6rem;display:flex;gap:1.2rem;align-items:flex-start}
+.opp-card-icon{width:44px;height:44px;border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:1.3rem;flex-shrink:0}
+.opp-card-icon.blue{background:rgba(37,99,235,.18)}.opp-card-icon.green{background:rgba(34,197,94,.15)}.opp-card-icon.gold{background:rgba(245,158,11,.15)}
+.opp-card h4{font-weight:700;font-size:.95rem;margin-bottom:.25rem}
+.opp-card p{color:var(--muted);font-size:.875rem;margin:0}
+/* GAP */
+.gap-section{background:var(--navy)}
+.gap-bars{display:grid;grid-template-columns:1fr 1fr;gap:2rem;margin-top:3rem}
+.gap-bar-label{display:flex;justify-content:space-between;margin-bottom:.5rem;font-size:.9rem;font-weight:600}
+.gap-bar-track{background:rgba(255,255,255,.07);border-radius:999px;height:14px;overflow:hidden}
+.gap-bar-fill{height:100%;border-radius:999px;transition:width 1.2s ease;width:0}
+.gap-caption{color:var(--muted);font-size:.8rem;margin-top:.4rem}
+.gap-callout{margin-top:3rem;background:linear-gradient(135deg,rgba(37,99,235,.15),rgba(6,182,212,.1));border:1px solid rgba(37,99,235,.3);border-radius:16px;padding:2rem 2.4rem;text-align:center}
+.gap-callout p{font-size:1.2rem;font-weight:600;color:var(--text)}
+.gap-callout span{color:var(--blue-l)}
+/* PROOF */
+.proof{background:var(--navy2)}
+.proof-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:1.5rem;margin-top:3rem}
+.proof-card{background:var(--navy3);border:1px solid var(--border);border-radius:14px;padding:1.6rem}
+.proof-card .check{color:var(--green);font-size:1.3rem;margin-bottom:.5rem}
+.proof-card h3{font-size:1.5rem;font-weight:900;letter-spacing:-.03em;color:var(--text);margin-bottom:.3rem}
+.proof-card p{color:var(--muted);font-size:.875rem}
+/* GET */
+.get-section{background:var(--navy)}
+.get-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:1.5rem;margin-top:3rem}
+.get-card{background:var(--navy2);border:1px solid var(--border);border-radius:16px;padding:2rem 1.8rem;transition:border-color .2s,transform .2s}
+.get-card:hover{border-color:rgba(59,130,246,.4);transform:translateY(-3px)}
+.get-card-num{font-size:.75rem;font-weight:700;color:var(--blue-l);letter-spacing:.1em;margin-bottom:1rem}
+.get-card h3{font-size:1.05rem;font-weight:700;margin-bottom:.5rem}
+.get-card p{color:var(--muted);font-size:.875rem}
+/* MARGINS */
+.margins{background:var(--navy2)}
+.margins-compare{display:grid;grid-template-columns:1fr 1fr;gap:2rem;margin-top:3rem}
+.margin-card{border-radius:16px;padding:2.2rem 2rem;text-align:center}
+.margin-card.theirs{background:rgba(255,255,255,.03);border:1px solid var(--border)}
+.margin-card.ours{background:linear-gradient(135deg,#1e3a8a 0%,#1e40af 100%);border:1px solid rgba(59,130,246,.4)}
+.margin-card .tag{font-size:.75rem;font-weight:700;letter-spacing:.08em;text-transform:uppercase;margin-bottom:.8rem;opacity:.7}
+.margin-card .pct{font-size:3.5rem;font-weight:900;letter-spacing:-.05em;line-height:1;margin-bottom:.4rem}
+.margin-card.theirs .pct{color:var(--muted)}.margin-card.ours .pct{color:#fff}
+.margin-card p{font-size:.875rem;opacity:.75}
+/* INVEST */
+.invest{background:var(--navy)}
+.invest-card{max-width:680px;margin:3rem auto 0;background:var(--navy2);border:1px solid var(--border);border-radius:20px;overflow:hidden}
+.invest-header{background:linear-gradient(135deg,#1e3a8a,#1d4ed8);padding:2rem 2.4rem}
+.invest-header h3{font-size:1.3rem;font-weight:800}
+.invest-header p{color:rgba(255,255,255,.7);font-size:.9rem;margin-top:.3rem}
+.invest-body{padding:2rem 2.4rem}
+.invest-row{display:flex;justify-content:space-between;padding:.75rem 0;border-bottom:1px solid var(--border)}
+.invest-row:last-child{border-bottom:none}
+.invest-row span:first-child{color:var(--muted);font-size:.9rem}
+.invest-row span:last-child{font-weight:700;font-size:.9rem}
+.invest-note{margin-top:1.5rem;font-size:.8rem;color:var(--muted);text-align:center;padding-bottom:1.5rem}
+/* CTA BANNER */
+.cta-banner{background:linear-gradient(135deg,#1e3a8a 0%,#1e40af 50%,#0369a1 100%);padding:5rem 2rem;text-align:center;position:relative;overflow:hidden}
+.cta-banner::before{content:'';position:absolute;inset:0;background:radial-gradient(ellipse 60% 80% at 50% 50%,rgba(99,179,237,.12) 0%,transparent 70%)}
+.cta-banner h2{font-size:clamp(1.8rem,4vw,3rem);font-weight:900;letter-spacing:-.03em;position:relative}
+.cta-banner p{color:rgba(255,255,255,.75);margin:1rem auto 2.4rem;max-width:520px;font-size:1.05rem;position:relative}
+.btn-white{background:#fff;color:#1e40af;padding:1rem 2.4rem;border-radius:10px;text-decoration:none;font-weight:800;font-size:1.05rem;position:relative;transition:all .2s;box-shadow:0 4px 24px rgba(0,0,0,.3);display:inline-block}
+.btn-white:hover{transform:translateY(-2px);box-shadow:0 8px 36px rgba(0,0,0,.4)}
+.cta-limit{margin-top:1.2rem;font-size:.8rem;color:rgba(255,255,255,.55);position:relative}
+/* ARCH DOCS */
+.arch-section{background:var(--navy2)}
+details summary{cursor:pointer;user-select:none;font-weight:700;font-size:1rem;color:var(--blue-l);padding:.6rem 0;list-style:none}
+details summary::-webkit-details-marker{display:none}
+details summary::before{content:"▶  ";font-size:.7rem}
+details[open] summary::before{content:"▼  "}
+.arch-card{background:var(--navy3);border:1px solid var(--border);border-radius:14px;padding:1.4rem;margin-bottom:1rem;margin-top:.8rem}
+.arch-card h3{font-size:.95rem;font-weight:700;margin-bottom:.8rem;color:var(--text)}
+pre{overflow-x:auto;border-radius:10px;padding:1rem;background:rgba(0,0,0,.4);border:1px solid var(--border);font-size:.82rem;color:#94a3b8;line-height:1.7}
+.chip-row{display:flex;flex-wrap:wrap;gap:.5rem;margin-top:.8rem;margin-bottom:0}
+.chip{border-radius:999px;padding:.3rem .75rem;font-size:.8rem;font-weight:600}
+.chip.web{background:rgba(22,163,74,.2);color:#4ade80;border:1px solid rgba(22,163,74,.35)}
+.chip.api{background:rgba(2,132,199,.2);color:#38bdf8;border:1px solid rgba(2,132,199,.35)}
+.chip.worker{background:rgba(234,88,12,.2);color:#fb923c;border:1px solid rgba(234,88,12,.35)}
+.chip.data{background:rgba(71,85,105,.25);color:#94a3b8;border:1px solid rgba(71,85,105,.4)}
+/* FOOTER */
+footer{background:var(--navy);border-top:1px solid var(--border);padding:2.5rem 2rem;text-align:center;color:var(--muted);font-size:.85rem}
+footer a{color:var(--blue-l);text-decoration:none}
+footer a:hover{text-decoration:underline}
+/* RESPONSIVE */
+@media(max-width:768px){
+  nav{padding:.8rem 1rem}
+  .nav-links{display:none}
+  .opp-grid,.gap-bars,.margins-compare{grid-template-columns:1fr}
+  .stat-strip{grid-template-columns:1fr 1fr}
+  .stat-item{border-right:none;border-bottom:1px solid var(--border)}
+  .stat-item:nth-child(odd){border-right:1px solid var(--border)}
+}
+</style>
+<script type="module">
+import mermaid from "https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.esm.min.mjs";
+mermaid.initialize({startOnLoad:true,theme:"dark",themeVariables:{background:"#111d35",primaryColor:"#1e3a8a",primaryTextColor:"#f1f5f9",lineColor:"#334155",secondaryColor:"#1e293b",tertiaryColor:"#0f172a"}});
+document.addEventListener("DOMContentLoaded",()=>{
+  const obs=new IntersectionObserver(e=>{e.forEach(x=>{if(x.isIntersecting){x.target.style.width=x.target.dataset.fill;obs.unobserve(x.target)}})},{threshold:.3});
+  document.querySelectorAll(".gap-bar-fill").forEach(el=>obs.observe(el));
+});
+</script>
+</head>
+<body>
 
-      main {
-        max-width: 1100px;
-        margin: 0 auto;
-        padding: 1rem;
-      }
-      .card {
-        background: white;
-        border: 1px solid #cbd5e1;
-        border-radius: 14px;
-        padding: 1rem;
-        box-shadow: 0 6px 20px rgba(2, 8, 23, 0.05);
-        margin-bottom: 1rem;
-      }
-      .toc a {
-        display: inline-block;
-        margin: 0.2rem 0.4rem 0.2rem 0;
-        color: #0f172a;
-        text-decoration: none;
-        border-bottom: 1px dashed #64748b;
-      }
-      .toc a:hover {
-        color: var(--api);
-      }
-      pre {
-        overflow-x: auto;
-        border: 1px solid #e2e8f0;
-        border-radius: 10px;
-        padding: 0.8rem;
-        background: #f8fafc;
-      }
-      footer {
-        text-align: center;
-        padding: 2rem 1rem;
-        color: #475569;
-      }
-    </style>
-    <script type="module">
-      import mermaid from "https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.esm.min.mjs";
-      mermaid.initialize({ startOnLoad: true, theme: "base" });
-    </script>
-  </head>
-  <body>
-    <header>
-      <h1>Ai-Franchise System Pages</h1>
-      <p class="sub">Color-coded architecture, table of contents, and operational flow charts.</p>
-      <div class="legend">
+<!-- NAV -->
+<nav>
+  <div class="nav-logo">Scale<span>Logix</span> AI</div>
+  <ul class="nav-links">
+    <li><a href="#opportunity">Opportunity</a></li>
+    <li><a href="#proof">Proof</a></li>
+    <li><a href="#get">What You Get</a></li>
+    <li><a href="#invest">Investment</a></li>
+    <li><a href="#system">System Docs</a></li>
+  </ul>
+  <a href="https://start.getscalelogixai.com/" target="_blank" rel="noopener" class="nav-cta">Apply Now &#x2192;</a>
+</nav>
+
+<!-- HERO -->
+<div class="hero">
+  <div class="hero-badge">Limited to 60 Launches Annually</div>
+  <h1>The <span class="accent">AI Services Market</span> Is the Fastest Wealth Transfer in History. Claim Your Share.</h1>
+  <p class="hero-sub">Own 100% of your AI automation agency &#x2014; powered by 4 years of proven infrastructure, $15M+ in verified client revenue, and a system that runs itself.</p>
+  <div class="hero-btns">
+    <a href="https://start.getscalelogixai.com/" target="_blank" rel="noopener" class="btn-primary">Get Started &#x2192;</a>
+    <a href="#opportunity" class="btn-ghost">See the Opportunity</a>
+  </div>
+</div>
+
+<!-- STAT STRIP -->
+<div class="stat-strip">
+  <div class="stat-item"><div class="stat-num blue">$1.85T</div><div class="stat-label">Enterprise AI market by 2030</div></div>
+  <div class="stat-item"><div class="stat-num green">50+</div><div class="stat-label">Successful agency launches</div></div>
+  <div class="stat-item"><div class="stat-num gold">$15M+</div><div class="stat-label">Verified client revenue</div></div>
+  <div class="stat-item"><div class="stat-num cyan">45&#x2013;55%</div><div class="stat-label">Net margin (vs 15&#x2013;20% traditional)</div></div>
+  <div class="stat-item"><div class="stat-num blue">2 mo</div><div class="stat-label">ChatGPT to 100M users</div></div>
+</div>
+
+<!-- OPPORTUNITY -->
+<section class="opp" id="opportunity">
+  <div class="container">
+    <div class="opp-grid">
+      <div class="opp-copy">
+        <div class="section-tag">The Market Gap</div>
+        <h2 class="section-title">The Adoption Curve Most People Will Miss</h2>
+        <p>The AI services market is experiencing the fastest adoption curve in history. ChatGPT hit 100M users in 2 months &#x2014; Facebook took 4.5 years. The enterprise AI market is exploding from $298B to $1.85T by 2030.</p>
+        <p>91% of enterprises plan to increase AI spending, yet only 12% of SMBs have any AI solutions. SMBs desperately need AI but can't build it themselves. They're paying $5K&#x2013;$15K monthly for AI automation that costs 90% less to deliver through our systems.</p>
+        <p style="font-weight:600;color:var(--text)">That gap is your opportunity &#x2014; and the window is closing.</p>
+      </div>
+      <div class="opp-cards">
+        <div class="opp-card">
+          <div class="opp-card-icon blue">&#x1F4C8;</div>
+          <div><h4>Fastest Adoption Ever Recorded</h4><p>The AI adoption curve dwarfs every previous technology wave &#x2014; internet, mobile, and social combined.</p></div>
+        </div>
+        <div class="opp-card">
+          <div class="opp-card-icon green">&#x1F3E2;</div>
+          <div><h4>SMBs Are Underserved &amp; Overpaying</h4><p>Only 12% of small businesses have any AI. Those that do pay $5K&#x2013;$15K/month for what costs a fraction to deliver.</p></div>
+        </div>
+        <div class="opp-card">
+          <div class="opp-card-icon gold">&#x26A1;</div>
+          <div><h4>First-Mover Advantage Is Now</h4><p>Early franchisees in every sector capture the highest margins. The SMB AI window is open &#x2014; but not forever.</p></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- GAP -->
+<section class="gap-section">
+  <div class="container">
+    <div class="section-tag">The Numbers</div>
+    <h2 class="section-title">A Gap This Wide Doesn't Stay Open Long</h2>
+    <div class="gap-bars">
+      <div>
+        <div class="gap-bar-label"><span>Enterprises increasing AI spend</span><span style="color:var(--blue-l)">91%</span></div>
+        <div class="gap-bar-track"><div class="gap-bar-fill" data-fill="91%" style="background:linear-gradient(90deg,#2563eb,#06b6d4)"></div></div>
+        <div class="gap-caption">Of enterprises plan to increase AI investment this year</div>
+      </div>
+      <div>
+        <div class="gap-bar-label"><span>SMBs with any AI solution</span><span style="color:var(--gold)">12%</span></div>
+        <div class="gap-bar-track"><div class="gap-bar-fill" data-fill="12%" style="background:linear-gradient(90deg,#f59e0b,#ef4444)"></div></div>
+        <div class="gap-caption">Of small businesses have adopted any AI solution today</div>
+      </div>
+    </div>
+    <div class="gap-callout">
+      <p>The 79-point gap between enterprise demand and SMB adoption is your <span>distribution advantage</span>. ScaleLogix turns that gap into recurring revenue.</p>
+    </div>
+  </div>
+</section>
+
+<!-- PROOF -->
+<section class="proof" id="proof">
+  <div class="container">
+    <div class="section-tag">Track Record</div>
+    <h2 class="section-title">Four Years. Real Numbers. Real Results.</h2>
+    <p class="section-sub">ScaleLogix has spent 4+ years building the infrastructure to capture this market &#x2014; not pitching and building at the same time.</p>
+    <div class="proof-grid">
+      <div class="proof-card"><div class="check">&#x2713;</div><h3>50+</h3><p>Successful agency launches across multiple verticals and markets worldwide</p></div>
+      <div class="proof-card"><div class="check">&#x2713;</div><h3>$15M+</h3><p>In verified client revenue generated through the ScaleLogix system</p></div>
+      <div class="proof-card"><div class="check">&#x2713;</div><h3>3-Year</h3><p>Refined B2B database &#x2014; not a cold list, a warm prospecting engine</p></div>
+      <div class="proof-card"><div class="check">&#x2713;</div><h3>Proven</h3><p>Sales and fulfillment systems that work without requiring technical expertise</p></div>
+    </div>
+  </div>
+</section>
+
+<!-- WHAT YOU GET -->
+<section class="get-section" id="get">
+  <div class="container">
+    <div class="section-tag">The System</div>
+    <h2 class="section-title">Everything You Need to Launch. Nothing You Don't.</h2>
+    <p class="section-sub">We provide the tech, team, and proven templates. You provide the working capital and own 100% of your agency.</p>
+    <div class="get-grid">
+      <div class="get-card"><div class="get-card-num">01 &#x2014; TECHNOLOGY</div><h3>Full AI Automation Stack</h3><p>White-labelled AI tools for lead intake, conversation automation, appointment setting, and client reporting &#x2014; all pre-built.</p></div>
+      <div class="get-card"><div class="get-card-num">02 &#x2014; SALES</div><h3>Proven Sales Playbook</h3><p>Cold-to-close scripts, objection handling, pricing models, and proposal templates refined across 50+ real launches.</p></div>
+      <div class="get-card"><div class="get-card-num">03 &#x2014; FULFILLMENT</div><h3>Done-For-You Delivery</h3><p>Client onboarding sequences, campaign templates, and delivery SOPs so you fulfil without building anything from scratch.</p></div>
+      <div class="get-card"><div class="get-card-num">04 &#x2014; DATABASE</div><h3>3-Year B2B Prospecting Engine</h3><p>A refined database of pre-qualified SMB buyers &#x2014; not a rented list, but a continuously updated prospecting system.</p></div>
+      <div class="get-card"><div class="get-card-num">05 &#x2014; TEAM</div><h3>Operator Support Network</h3><p>Weekly calls, direct support, and access to the community of operators running this system at scale.</p></div>
+      <div class="get-card"><div class="get-card-num">06 &#x2014; OWNERSHIP</div><h3>100% Yours</h3><p>You own your agency outright. No royalties, no revenue share on client fees. We earn on setup; you keep what you build.</p></div>
+    </div>
+  </div>
+</section>
+
+<!-- MARGINS -->
+<section class="margins">
+  <div class="container">
+    <div class="section-tag">The Economics</div>
+    <h2 class="section-title">Margins That Make Traditional Agencies Look Broken</h2>
+    <div class="margins-compare">
+      <div class="margin-card theirs"><div class="tag">Traditional Agency</div><div class="pct">15&#x2013;20%</div><p>Net margin &#x2014; after staff, tools, overhead, and churn</p></div>
+      <div class="margin-card ours"><div class="tag">ScaleLogix AI Agency</div><div class="pct">45&#x2013;55%</div><p>Net margin &#x2014; AI delivers results at 90% lower cost than manual fulfilment</p></div>
+    </div>
+  </div>
+</section>
+
+<!-- INVESTMENT -->
+<section class="invest" id="invest">
+  <div class="container">
+    <div style="text-align:center;max-width:600px;margin:0 auto">
+      <div class="section-tag">The Numbers</div>
+      <h2 class="section-title">Simple Math. Clear ROI.</h2>
+      <p class="section-sub">We're operators, not a fund. Our expertise is building and running; yours is capital deployment.</p>
+    </div>
+    <div class="invest-card">
+      <div class="invest-header"><h3>Launch Economics</h3><p>Per agency partner &#x2014; you own 100% of what you build</p></div>
+      <div class="invest-body">
+        <div class="invest-row"><span>Setup investment range</span><span>$17,500 &#x2013; $34,000</span></div>
+        <div class="invest-row"><span>Working capital required</span><span>Varies by market</span></div>
+        <div class="invest-row"><span>Average client monthly retainer</span><span>$2,500 &#x2013; $8,000</span></div>
+        <div class="invest-row"><span>Net margin on revenue</span><span style="color:var(--green)">45&#x2013;55%</span></div>
+        <div class="invest-row"><span>Revenue share / royalties</span><span style="color:var(--green)">$0 &#x2014; none</span></div>
+        <div class="invest-row"><span>Annual launch capacity</span><span style="color:var(--gold)">60 worldwide (limited)</span></div>
+      </div>
+      <div class="invest-note">This is a capital partnership, not a franchise fee model. You own your book of business outright.</div>
+    </div>
+  </div>
+</section>
+
+<!-- CTA BANNER -->
+<div class="cta-banner">
+  <h2>Ready to Own Your AI Agency?</h2>
+  <p>Apply for one of the 60 available launch slots. First-come, first-qualified. We'll show you exactly what your market looks like before you commit a dollar.</p>
+  <a href="https://start.getscalelogixai.com/" target="_blank" rel="noopener" class="btn-white">Apply at start.getscalelogixai.com &#x2192;</a>
+  <p class="cta-limit">&#x26A0; Launches are limited to 60 annually worldwide to preserve quality and market share</p>
+</div>
+
+<!-- SYSTEM DOCS -->
+<section class="arch-section" id="system">
+  <div class="container">
+    <div class="section-tag">Internal Reference</div>
+    <h2 class="section-title" style="margin-bottom:.5rem">Platform Architecture</h2>
+    <p class="section-sub" style="margin-bottom:2rem">Technical reference for the Ai-Franchise platform stack.</p>
+
+    <details open>
+      <summary>System Architecture Diagram</summary>
+      <div class="chip-row">
         <span class="chip web">Web Surfaces</span>
         <span class="chip api">API Layer</span>
         <span class="chip worker">Worker Automation</span>
-        <span class="chip data">Data & Infra</span>
+        <span class="chip data">Data &amp; Infra</span>
       </div>
-    </header>
-
-    <main>
-      <section class="card toc" id="toc">
-        <h2>Table of Contents</h2>
-        <a href="#architecture">Architecture</a>
-        <a href="#lead-flow">Lead Flow</a>
-        <a href="#billing-flow">Billing Flow</a>
-        <a href="#services">Service Endpoints</a>
-      </section>
-
-      <section class="card" id="architecture">
-        <h2>System Architecture</h2>
+      <div class="arch-card">
         <div class="mermaid">
 flowchart LR
   A[Agency Dashboard :3000]:::web --> D[Fastify API :3001]:::api
@@ -125,16 +345,17 @@ flowchart LR
   G --> H[OpenAI]:::api
   G --> I[Telnyx]:::api
   G --> J[Resend]:::api
-
-  classDef web fill:#DCFCE7,stroke:#16A34A,color:#14532D
-  classDef api fill:#E0F2FE,stroke:#0284C7,color:#0C4A6E
-  classDef worker fill:#FFEDD5,stroke:#EA580C,color:#7C2D12
-  classDef data fill:#E2E8F0,stroke:#334155,color:#0F172A
+  classDef web fill:#14532D,stroke:#22c55e,color:#dcfce7
+  classDef api fill:#0C4A6E,stroke:#0284c7,color:#e0f2fe
+  classDef worker fill:#7C2D12,stroke:#ea580c,color:#ffedd5
+  classDef data fill:#1e293b,stroke:#475569,color:#94a3b8
         </div>
-      </section>
+      </div>
+    </details>
 
-      <section class="card" id="lead-flow">
-        <h2>Lead Intake and AI Response Flow</h2>
+    <details style="margin-top:1.2rem">
+      <summary>Lead Intake &amp; AI Response Flow</summary>
+      <div class="arch-card">
         <div class="mermaid">
 flowchart TD
   S[Lead arrives] --> V{Valid request?}
@@ -143,13 +364,15 @@ flowchart TD
   C --> Q[Queue jobs]
   Q --> W[Workers execute]
   W --> R[Generate AI response]
-  R --> T[Send SMS/Email]
+  R --> T[Send SMS / Email]
   T --> U[Update status + analytics]
         </div>
-      </section>
+      </div>
+    </details>
 
-      <section class="card" id="billing-flow">
-        <h2>Billing Flow</h2>
+    <details style="margin-top:1.2rem">
+      <summary>Billing Flow</summary>
+      <div class="arch-card">
         <div class="mermaid">
 sequenceDiagram
   participant Owner
@@ -164,21 +387,28 @@ sequenceDiagram
   Stripe->>API: Webhook (subscription active)
   API-->>Web: Updated billing status
         </div>
-      </section>
+      </div>
+    </details>
 
-      <section class="card" id="services">
-        <h2>Service Endpoints</h2>
-        <pre>
-Agency Dashboard : http://localhost:3000
-API             : http://localhost:3001
-Client Portal   : http://localhost:3002
-Landing Site    : http://localhost:3003
-        </pre>
-      </section>
-    </main>
+    <details style="margin-top:1.2rem">
+      <summary>Service Endpoints</summary>
+      <div class="arch-card">
+        <h3>Local Development</h3>
+        <pre>Agency Dashboard  ->  http://localhost:3000
+Fastify API       ->  http://localhost:3001
+Client Portal     ->  http://localhost:3002
+Landing Site      ->  http://localhost:3003</pre>
+      </div>
+    </details>
 
-    <footer>
-      Ai-Franchise Pages - generated system documentation site
-    </footer>
-  </body>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <p style="margin-bottom:.5rem">&#169; 2026 ScaleLogix AI. All rights reserved.</p>
+  <p><a href="https://start.getscalelogixai.com/" target="_blank" rel="noopener">start.getscalelogixai.com</a></p>
+</footer>
+
+</body>
 </html>
