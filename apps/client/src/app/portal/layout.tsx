@@ -1,4 +1,5 @@
-import { auth, UserButton } from '@clerk/nextjs/server';
+import { UserButton } from '@clerk/nextjs';
+import { auth } from '@clerk/nextjs/server';
 import { redirect } from 'next/navigation';
 import { Zap } from 'lucide-react';
 
@@ -19,7 +20,6 @@ export default async function PortalLayout({
             <Zap className="h-5 w-5 text-primary" />
             <span className="font-semibold">Client Portal</span>
           </div>
-          {/* @ts-expect-error Clerk Server Component */}
           <UserButton />
         </div>
       </header>

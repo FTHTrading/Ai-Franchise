@@ -32,7 +32,7 @@ async function LeadsContent({ clientId }: { clientId: string }) {
   return (
     <>
       <PageHeader
-        title={`${client.businessName} — Leads`}
+        title={`${client.name} — Leads`}
         description={`${leadsResult.total} leads in pipeline`}
       >
         <div className="flex gap-2">

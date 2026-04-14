@@ -48,7 +48,17 @@ export type Permission =
 
 // ─── Lead ──────────────────────────────────
 
-export type LeadStatus = 'NEW' | 'CONTACTED' | 'QUALIFIED' | 'BOOKED' | 'WON' | 'LOST' | 'UNSUBSCRIBED';
+export const LeadStatus = {
+  NEW: 'NEW',
+  CONTACTED: 'CONTACTED',
+  QUALIFIED: 'QUALIFIED',
+  BOOKED: 'BOOKED',
+  WON: 'WON',
+  LOST: 'LOST',
+  UNSUBSCRIBED: 'UNSUBSCRIBED',
+} as const;
+
+export type LeadStatus = (typeof LeadStatus)[keyof typeof LeadStatus];
 export type LeadSource =
   | 'WEBSITE_FORM'
   | 'LANDING_PAGE'
@@ -79,6 +89,27 @@ export interface Lead {
   nextFollowUpAt?: Date;
   customFields: Record<string, unknown>;
   tags: string[];
+  createdAt: Date;
+  updatedAt: Date;
+}
+
+export interface ClientAccount {
+  id: ID;
+  organizationId: ID;
+  name: string;
+  slug: string;
+  businessType?: string;
+  industry?: string;
+  website?: string;
+  phone?: string;
+  email?: string;
+  address?: string;
+  city?: string;
+  state?: string;
+  zip?: string;
+  country?: string;
+  notes?: string;
+  isActive: boolean;
   createdAt: Date;
   updatedAt: Date;
 }
@@ -123,6 +154,15 @@ export interface Message {
 }
 
 // ─── Workflow ──────────────────────────────
+
+export const WorkflowStatus = {
+  DRAFT: 'DRAFT',
+  ACTIVE: 'ACTIVE',
+  PAUSED: 'PAUSED',
+  ARCHIVED: 'ARCHIVED',
+} as const;
+
+export type WorkflowStatus = (typeof WorkflowStatus)[keyof typeof WorkflowStatus];
 
 export type WorkflowTriggerType =
   | 'NEW_LEAD'
@@ -182,6 +222,37 @@ export interface WorkflowDefinition {
   };
 }
 
+export interface WorkflowInstance {
+  id: ID;
+  organizationId: ID;
+  clientAccountId?: ID;
+  templateId?: ID;
+  name: string;
+  description?: string;
+  status: WorkflowStatus;
+  triggerType: WorkflowTriggerType;
+  createdAt: Date;
+  updatedAt: Date;
+}
+
+export interface Conversation {
+  id: ID;
+  organizationId: ID;
+  clientAccountId: ID;
+  leadId?: ID;
+  channelId?: ID;
+  channel: MessageChannel;
+  isOpen: boolean;
+  isRead: boolean;
+  lastMessageAt?: Date;
+  aiEnabled: boolean;
+  resolvedAt?: Date;
+  createdAt: Date;
+  updatedAt: Date;
+  lead?: Pick<Lead, 'id' | 'firstName' | 'lastName' | 'phone' | 'email' | 'status'>;
+  messages?: Message[];
+}
+
 // ─── AI ────────────────────────────────────
 
 export type AIProvider = 'openai' | 'anthropic' | 'local';
@@ -214,6 +285,17 @@ export interface PromptTemplate {
 
 export type SubscriptionTier = 'STARTER' | 'GROWTH' | 'PROFESSIONAL' | 'ENTERPRISE';
 export type SubscriptionStatus = 'TRIALING' | 'ACTIVE' | 'PAST_DUE' | 'CANCELLED' | 'UNPAID' | 'PAUSED';
+
+export interface BillingAccount {
+  id: ID;
+  organizationId: ID;
+  stripeId?: string;
+  email?: string;
+  name?: string;
+  currency: string;
+  createdAt: Date;
+  updatedAt: Date;
+}
 
 export interface PricingPlan {
   id: string;

@@ -14,6 +14,8 @@ import { ChevronDown, ChevronUp, ChevronsUpDown } from 'lucide-react';
 import { cn } from '../lib/utils';
 import { Button } from './button';
 
+export type { ColumnDef } from '@tanstack/react-table';
+
 interface DataTableProps<TData> {
   columns: ColumnDef<TData>[];
   data: TData[];

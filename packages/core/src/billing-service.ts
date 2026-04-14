@@ -28,7 +28,7 @@ export class BillingService {
     billing = await this.db.billingAccount.create({
       data: {
         organizationId,
-        stripeCustomerId: customer.id,
+        stripeId: customer.id,
         email: params.email,
         name: params.name,
       },
@@ -46,9 +46,10 @@ export class BillingService {
   }) {
     const billing = await this.db.billingAccount.findUnique({ where: { organizationId } });
     if (!billing) throw new Error('No billing account found. Create one first.');
+    if (!billing.stripeId) throw new Error('Billing account has no Stripe ID');
 
     return this.stripe.createCheckoutSession({
-      customerId: billing.stripeCustomerId,
+      customerId: billing.stripeId,
       priceId: params.priceId,
       successUrl: params.successUrl,
       cancelUrl: params.cancelUrl,
@@ -66,7 +67,7 @@ export class BillingService {
       return this.db.subscription.update({
         where: { organizationId },
         data: {
-          stripeSubscriptionId,
+          stripeSubId: stripeSubscriptionId,
           status: status as never,
           tier: tier as never,
           mrr,
@@ -79,7 +80,7 @@ export class BillingService {
     return this.db.subscription.create({
       data: {
         organizationId,
-        stripeSubscriptionId,
+        stripeSubId: stripeSubscriptionId,
         status: status as never,
         tier: tier as never,
         mrr,
@@ -92,7 +93,8 @@ export class BillingService {
   async getBillingPortalUrl(organizationId: string, returnUrl: string) {
     const billing = await this.db.billingAccount.findUnique({ where: { organizationId } });
     if (!billing) throw new Error('No billing account found');
-    return this.stripe.createBillingPortalSession(billing.stripeCustomerId, returnUrl);
+    if (!billing.stripeId) throw new Error('Billing account has no Stripe ID');
+    return this.stripe.createBillingPortalSession(billing.stripeId, returnUrl);
   }
 
   async getSubscription(organizationId: string) {
@@ -100,12 +102,17 @@ export class BillingService {
   }
 
   async recordUsage(organizationId: string, type: string, quantity: number, metadata?: Record<string, unknown>) {
+    const now = new Date();
+    const periodStart = new Date(now.getFullYear(), now.getMonth(), 1);
+    const periodEnd = new Date(now.getFullYear(), now.getMonth() + 1, 0);
     return this.db.usageLog.create({
       data: {
         organizationId,
-        type,
+        category: type,
         quantity,
-        metadata: metadata ?? {},
+        periodStart,
+        periodEnd,
+        metadata: (metadata ?? {}) as never,
       },
     });
   }
@@ -114,14 +121,14 @@ export class BillingService {
     const since = new Date(Date.now() - 30 * 24 * 60 * 60 * 1000);
 
     const logs = await this.db.usageLog.groupBy({
-      by: ['type'],
+      by: ['category'],
       where: { organizationId, createdAt: { gte: since } },
       _sum: { quantity: true },
     });
 
     const summary: Record<string, number> = {};
     for (const log of logs) {
-      summary[log.type] = log._sum.quantity ?? 0;
+      summary[log.category] = log._sum.quantity ?? 0;
     }
     return summary;
   }

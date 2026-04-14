@@ -13,8 +13,8 @@ export async function authRoutes(app: FastifyInstance) {
 
     const user = await db.user.upsert({
       where: { clerkId },
-      create: { clerkId, email, firstName, lastName: lastName ?? null, imageUrl: imageUrl ?? null },
-      update: { email, firstName, lastName: lastName ?? null, imageUrl: imageUrl ?? null },
+      create: { clerkId, email, firstName, lastName: lastName ?? null, avatarUrl: imageUrl ?? null },
+      update: { email, firstName, lastName: lastName ?? null, avatarUrl: imageUrl ?? null },
     });
 
     return reply.send({ user });
@@ -32,7 +32,7 @@ export async function authRoutes(app: FastifyInstance) {
       const user = await db.user.findUnique({
         where: { clerkId: ctx.clerkId },
         include: {
-          memberships: {
+          organizationMemberships: {
             where: { organizationId: ctx.organizationId ?? undefined },
             include: { organization: true },
           },

@@ -41,5 +41,5 @@ async function ClientList({ orgId }: { orgId: string }) {
     );
   }
 
-  return <ClientAccountsTable accounts={result.data} />;
+  return <ClientAccountsTable data={result.data} />;
 }

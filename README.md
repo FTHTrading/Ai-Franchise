@@ -23,62 +23,101 @@ Ai-Franchise is designed to help agencies and operators deploy repeatable AI-pow
 
 The platform is engineered for simplicity, speed, repeatability, and white-label commercialization.
 
-## Table of Contents
-
-1. [Product Goals](#product-goals)
-2. [Target Users](#target-users)
-3. [Golden Path Demo](#golden-path-demo)
-4. [Simplicity Rules](#simplicity-rules)
-5. [System Color Map](#system-color-map)
-6. [Engineered Architecture](#engineered-architecture)
-7. [Flow Charts](#flow-charts)
-8. [Core Modules](#core-modules)
-9. [Data Model and Tenant Safety](#data-model-and-tenant-safety)
-10. [Integrations and Fallback Behavior](#integrations-and-fallback-behavior)
-11. [Reliability and Security](#reliability-and-security)
-12. [Monorepo Layout](#monorepo-layout)
-13. [Quick Start](#quick-start)
-14. [Service URLs](#service-urls)
-15. [GitHub Pages](#github-pages)
-16. [Production Notes](#production-notes)
-17. [License](#license)
-
 ## Product Goals
 
-- capture every lead that enters the system
-- respond instantly with policy-safe AI assistance
-- automate follow-up until qualification or booking
-- convert pipeline movement into booked revenue
-- provide visibility to agencies and clients without friction
-- scale the same winning system across many client accounts
+- Never lose inbound demand: every lead is captured and traceable.
+- Respond in minutes or less: immediate AI-assisted first-touch.
+- Convert through automation: structured, multi-step follow-up.
+- Book outcomes, not activity: appointments and revenue are first-class metrics.
+- Scale across tenants: agencies can replicate proven systems across client accounts.
+- Preserve operator control: AI accelerates execution, humans own final accountability.
+
+## Table of Contents
+
+1. [Target Users](#target-users)
+2. [Golden Path Demo](#golden-path-demo)
+3. [Simplicity Rules](#simplicity-rules)
+4. [Core Modules](#core-modules)
+5. [Data Model and Tenant Safety](#data-model-and-tenant-safety)
+6. [Reliability and Security](#reliability-and-security)
+7. [System Color Map](#system-color-map)
+8. [Engineered Architecture](#engineered-architecture)
+9. [Flow Charts](#flow-charts)
+10. [Monorepo Layout](#monorepo-layout)
+11. [Quick Start](#quick-start)
+12. [Service URLs](#service-urls)
+13. [GitHub Pages](#github-pages)
+14. [Production Notes](#production-notes)
+15. [License](#license)
 
 ## Target Users
 
-- Agency Owner: configures organization, pricing, templates, and client operations
-- Operator: runs daily lead handling, escalation, approvals, and campaign tuning
-- Client: views leads, conversations, appointments, and outcomes in the client portal
-- Super Admin: governs platform-level policies, reliability controls, and tenant safety
+- Agency Owner: configures workspace, client accounts, pricing, and operating standards.
+- Operator: runs day-to-day lead handling, inbox management, and workflow operations.
+- Client: sees outcomes in the client portal (leads, conversations, appointments, results).
+- Super Admin: governs platform-level controls, safety, and multi-tenant operations.
 
 ## Golden Path Demo
 
 1. Agency Owner creates organization workspace.
-2. Agency Owner onboards a new client account.
-3. Operator connects SMS and email channels.
-4. Operator installs a template-first automation workflow.
-5. Lead enters system via form, call, or inbound message.
-6. AI follows up instantly and qualifies lead.
-7. Workflow books appointment and updates pipeline.
-8. Client reviews performance and outcomes in the portal.
-9. Agency clones the same setup for the next client account.
+2. Operator onboards first client account.
+3. Team connects SMS and email channels.
+4. Team installs a template workflow.
+5. New lead enters from form, ads, missed call, or inbound SMS.
+6. AI sends first response and starts follow-up sequence.
+7. Workflow updates lead stage and scores qualification.
+8. Appointment gets booked and tracked.
+9. Client sees pipeline and conversation outcome in portal.
+10. Agency repeats the same winning setup across more client accounts.
 
 ## Simplicity Rules
 
-- guided onboarding over complex setup
-- template-first workflows before custom workflow design
-- plain business language over internal jargon
-- no enterprise clutter in core user paths
-- default flows first, customization second
-- no silent behavior: important actions must be visible in logs and timelines
+- Guided onboarding over complex setup.
+- Template-first workflow deployment over custom-from-scratch logic.
+- Plain business language over technical jargon in user surfaces.
+- Default flows before custom flows.
+- No enterprise clutter in primary operator paths.
+- Keep critical actions one or two clicks from the dashboard.
+
+## Core Modules
+
+- CRM: lead capture, status progression, notes, tags, and ownership.
+- Communications: SMS/email conversations, threading, and timeline visibility.
+- Workflow Engine: trigger/step execution, orchestration, and status transitions.
+- AI Orchestration: prompt templates, reply generation, qualification support, escalation.
+- Billing: subscriptions, usage tracking, checkout, and portal management.
+- White-labeling: organization/client branding and reusable template cloning.
+- Client Portal: client-facing visibility into leads, appointments, and activity.
+- Admin: tenancy governance, permissions, and operational controls.
+
+## Data Model and Tenant Safety
+
+The data model is intentionally tenant-first and safety-constrained:
+
+- Organizations: top-level tenant boundary.
+- Client Accounts: customer-level business units inside an organization.
+- Memberships: explicit user-to-organization and user-to-client access links.
+- RBAC: role/permission matrix controls all sensitive actions.
+- Tenant-aware query boundaries: routes and services must scope by tenant identifiers.
+- Audit logging: change history and actor context for traceability.
+- Webhook idempotency: external events are deduplicated and safely re-processed.
+
+These constraints are mandatory platform guarantees, not optional conventions.
+
+## Reliability and Security
+
+Operational behavior is designed for platform-grade execution:
+
+- Idempotent webhook handling for Stripe/Telnyx/Resend/OpenAI events.
+- Queue-backed async processing for workflow, AI reply, scoring, reminders, and email.
+- Retry strategy on transient failures with structured failure states.
+- Failure queues/manual intervention path for non-recoverable jobs.
+- Human escalation path for low-confidence or high-risk AI outcomes.
+- Delivery logs for communication visibility and diagnostics.
+- Webhook replay support through persisted event records.
+- Tenant isolation in service boundaries and API authorization checks.
+- Structured logs and correlation identifiers for incident analysis.
+- Audit trails on privileged and data-mutating operations.
 
 ## System Color Map
 
@@ -156,53 +195,6 @@ sequenceDiagram
       API-->>Web: Active plan visible
 ```
 
-## Core Modules
-
-- CRM: lead lifecycle, stage movement, qualification state, account assignment
-- Communications: conversation threads, SMS/email send/receive, delivery state
-- Workflow Engine: event triggers, step execution, conditional branching, retries
-- AI Orchestration: response generation, template prompts, confidence-based escalation
-- Billing: subscription state, usage tracking, customer lifecycle events
-- White-labeling: branding, tenant-specific settings, reusable workflow templates
-- Client Portal: client-safe visibility into leads, appointments, and activity
-- Admin: tenant governance, audit review, operational controls
-
-## Data Model and Tenant Safety
-
-Tenant safety is a non-negotiable invariant in this platform:
-
-- Organizations represent top-level agency tenant boundaries.
-- Client Accounts isolate each downstream business served by an agency.
-- Memberships and RBAC govern who can view or mutate tenant data.
-- All data access must be organization-scoped and client-safe by default.
-- Audit logging records critical state transitions and administrative actions.
-- Webhook idempotency prevents duplicate external event processing.
-
-Primary multi-tenant entities include Organization, ClientAccount, OrganizationMembership, Lead, Conversation, Message, Appointment, Workflow, BillingAccount, UsageLog, and AuditLog.
-
-## Integrations and Fallback Behavior
-
-External providers include OpenAI, Telnyx, Resend, and Stripe. Platform behavior under failure must remain deterministic:
-
-- retries with bounded backoff for transient provider failures
-- failure queues for messages/jobs that exceed retry thresholds
-- manual intervention path for operators to resolve blocked conversations
-- human escalation when AI confidence or policy constraints require it
-- delivery logs for outbound communication traceability
-- webhook replay support with idempotency checks
-
-This is required platform behavior, not optional enhancement.
-
-## Reliability and Security
-
-- idempotent webhook processing and replay safety
-- strict RBAC enforcement across all API routes
-- tenant isolation and organization/client-boundary checks
-- append-only audit trails for critical operations
-- job retries with dead-letter/failure capture strategy
-- structured logs with correlation identifiers for tracing
-- secrets management via environment and CI secret stores only
-
 ## Monorepo Layout
 
 ```text
@@ -257,6 +249,8 @@ After first push to `main`, enable Pages in repository settings:
 - Keep secrets in GitHub Actions secrets and `.env` files, never in source control.
 - Run `pnpm type-check` and `pnpm build` in CI before deploy.
 - Use managed PostgreSQL/Redis in production and configure backups/alerts.
+- Use alerting on queue depth, webhook failures, and provider delivery errors.
+- Enforce webhook signature checks and replay-safe processing.
 
 ## License
 

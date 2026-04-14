@@ -1,9 +1,10 @@
 import { Queue, Worker, type Job } from 'bullmq';
 import IORedis from 'ioredis';
-import { env } from '@aaos/config';
+import { getServerEnv } from '@aaos/config';
 
 // ── Redis connection ──────────────────────────────────────────────────────
 
+const env = getServerEnv();
 export const redis = new IORedis(env.REDIS_URL, {
   maxRetriesPerRequest: null,
 });

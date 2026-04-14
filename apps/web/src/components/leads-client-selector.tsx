@@ -2,7 +2,7 @@
 
 import { useRouter } from 'next/navigation';
 import type { ClientAccount } from '@aaos/types';
-import { Card, CardContent, Button } from '@aaos/ui';
+import { Card, CardContent } from '@aaos/ui';
 import { Building2, ChevronRight } from 'lucide-react';
 
 export function LeadsClientSelector({ clients }: { clients: ClientAccount[] }) {
@@ -23,9 +23,9 @@ export function LeadsClientSelector({ clients }: { clients: ClientAccount[] }) {
                 <Building2 className="h-5 w-5 text-primary" />
               </div>
               <div className="flex-1 min-w-0">
-                <p className="font-medium truncate">{client.businessName}</p>
+                <p className="font-medium truncate">{client.name}</p>
                 <p className="text-xs text-muted-foreground">
-                  {client.contactName ?? 'No contact'}
+                  {client.email ?? client.phone ?? 'No contact'}
                 </p>
               </div>
               <ChevronRight className="h-4 w-4 text-muted-foreground" />

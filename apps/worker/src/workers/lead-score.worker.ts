@@ -1,8 +1,6 @@
 import { Worker, type Job } from 'bullmq';
 import { redis, QUEUES, type LeadScoreJobPayload } from '../queues';
-import { prisma } from '@aaos/db';
-import { AIProvider } from '@aaos/ai';
-import { env } from '@aaos/config';
+import { db } from '@aaos/db';
 
 export function createLeadScoreWorker() {
   return new Worker<LeadScoreJobPayload>(
@@ -12,14 +10,14 @@ export function createLeadScoreWorker() {
 
       console.log(`[lead-score-worker] Scoring lead ${leadId}`);
 
-      const lead = await prisma.lead.findUnique({
+      const lead = await db.lead.findUnique({
         where: { id: leadId },
         include: {
           conversations: {
             include: { messages: { orderBy: { createdAt: 'desc' }, take: 5 } },
           },
           notes: true,
-          tags: { include: { tag: true } },
+          tags: true,
         },
       });
 
@@ -47,9 +45,16 @@ export function createLeadScoreWorker() {
       if (lead.status === 'QUALIFIED') score += 10;
       if (lead.status === 'BOOKED') score += 15;
 
-      await prisma.lead.update({
+      // Lead model has no `score` field — store in customFields
+      await db.lead.update({
         where: { id: leadId },
-        data: { score: Math.min(score, 100) },
+        data: {
+          customFields: {
+            ...(lead.customFields as Record<string, unknown>),
+            leadScore: Math.min(score, 100),
+            scoredAt: new Date().toISOString(),
+          },
+        },
       });
 
       console.log(`[lead-score-worker] Lead ${leadId} scored: ${score}`);

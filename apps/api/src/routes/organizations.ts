@@ -2,16 +2,13 @@ import { type FastifyInstance, type FastifyRequest } from 'fastify';
 import { z } from 'zod';
 import { db } from '@aaos/db';
 import { hasPermission } from '@aaos/auth';
-import { type AuthContext } from '@aaos/types';
 import { authenticate } from '../middleware/auth';
-
-type AuthReq = FastifyRequest & { authContext: AuthContext };
 
 export async function organizationsRoutes(app: FastifyInstance) {
   app.addHook('preHandler', authenticate);
 
   // GET /organizations/:slug
-  app.get('/organizations/:slug', async (request: AuthReq, reply) => {
+  app.get('/organizations/:slug', async (request, reply) => {
     const { slug } = request.params as { slug: string };
     const org = await db.organization.findUnique({
       where: { slug },
@@ -21,7 +18,7 @@ export async function organizationsRoutes(app: FastifyInstance) {
 
     // Verify caller is a member
     const membership = await db.organizationMembership.findUnique({
-      where: { organizationId_userId: { organizationId: org.id, userId: request.authContext.userId } },
+      where: { userId_organizationId: { organizationId: org.id, userId: request.authContext.userId } },
     });
     if (!membership) return reply.code(403).send({ error: 'Forbidden' });
 
@@ -29,11 +26,11 @@ export async function organizationsRoutes(app: FastifyInstance) {
   });
 
   // POST /organizations
-  app.post('/organizations', async (request: AuthReq, reply) => {
+  app.post('/organizations', async (request, reply) => {
     const body = CreateOrgSchema.safeParse(request.body);
     if (!body.success) return reply.code(400).send({ error: 'Bad Request', details: body.error.flatten() });
 
-    const { name, slug, niche } = body.data;
+    const { name, slug } = body.data;
 
     // Check slug uniqueness
     const existing = await db.organization.findUnique({ where: { slug } });
@@ -43,8 +40,7 @@ export async function organizationsRoutes(app: FastifyInstance) {
       data: {
         name,
         slug,
-        niche: niche ?? null,
-        members: {
+        memberships: {
           create: { userId: request.authContext.userId, role: 'ORGANIZATION_OWNER' },
         },
         brandSettings: { create: {} },
@@ -57,12 +53,12 @@ export async function organizationsRoutes(app: FastifyInstance) {
   });
 
   // PATCH /organizations/:id
-  app.patch('/organizations/:id', async (request: AuthReq, reply) => {
+  app.patch('/organizations/:id', async (request, reply) => {
     const { id } = request.params as { id: string };
     const body = UpdateOrgSchema.safeParse(request.body);
     if (!body.success) return reply.code(400).send({ error: 'Bad Request', details: body.error.flatten() });
 
-    if (!hasPermission(request.authContext.role, 'settings:manage')) {
+    if (!hasPermission(request.authContext.role, 'settings:write')) {
       return reply.code(403).send({ error: 'Forbidden' });
     }
 
@@ -74,7 +70,7 @@ export async function organizationsRoutes(app: FastifyInstance) {
   });
 
   // GET /organizations/:id/members
-  app.get('/organizations/:id/members', async (request: AuthReq, reply) => {
+  app.get('/organizations/:id/members', async (request, reply) => {
     const { id } = request.params as { id: string };
     const members = await db.organizationMembership.findMany({
       where: { organizationId: id },
@@ -84,7 +80,7 @@ export async function organizationsRoutes(app: FastifyInstance) {
   });
 
   // POST /organizations/:id/members/invite
-  app.post('/organizations/:id/members/invite', async (request: AuthReq, reply) => {
+  app.post('/organizations/:id/members/invite', async (request, reply) => {
     const { id } = request.params as { id: string };
     if (!hasPermission(request.authContext.role, 'team:invite')) {
       return reply.code(403).send({ error: 'Forbidden' });
@@ -101,7 +97,6 @@ export async function organizationsRoutes(app: FastifyInstance) {
 const CreateOrgSchema = z.object({
   name: z.string().min(2).max(100),
   slug: z.string().min(2).max(50).regex(/^[a-z0-9-]+$/),
-  niche: z.string().optional(),
 });
 
 const UpdateOrgSchema = z.object({

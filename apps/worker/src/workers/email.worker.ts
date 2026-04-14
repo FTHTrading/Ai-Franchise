@@ -1,7 +1,9 @@
 import { Worker, type Job } from 'bullmq';
 import { redis, QUEUES, type EmailJobPayload } from '../queues';
 import { ResendService } from '@aaos/integrations';
-import { env } from '@aaos/config';
+import { getServerEnv } from '@aaos/config';
+
+const env = getServerEnv();
 
 export function createEmailWorker() {
   return new Worker<EmailJobPayload>(
@@ -11,9 +13,9 @@ export function createEmailWorker() {
 
       console.log(`[email-worker] Sending email to ${to} | subject="${subject}"`);
 
-      const resend = new ResendService(env.RESEND_API_KEY);
+      const resend = new ResendService({ apiKey: env.RESEND_API_KEY });
       await resend.sendEmail({
-        from: from ?? env.EMAIL_FROM ?? 'noreply@agencyos.app',
+        from: from ?? 'noreply@agencyos.app',
         to,
         subject,
         html,

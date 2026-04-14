@@ -1,6 +1,6 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
-  transpilePackages: ['@aaos/ui'],
+  transpilePackages: ['@aaos/ui', '@aaos/types'],
   reactStrictMode: true,
   experimental: {
     serverActions: {

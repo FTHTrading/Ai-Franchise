@@ -206,8 +206,9 @@ export default function OnboardingPage() {
 
   const advance = () => {
     const idx = STEPS.findIndex((s) => s.id === step);
-    if (idx < STEPS.length - 1) {
-      setStep(STEPS[idx + 1].id);
+    const nextStep = idx >= 0 ? STEPS[idx + 1] : undefined;
+    if (nextStep) {
+      setStep(nextStep.id);
     } else {
       setStep('done');
     }

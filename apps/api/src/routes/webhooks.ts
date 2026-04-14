@@ -7,8 +7,8 @@ import { getServerEnv } from '@aaos/config';
 
 export async function webhooksRoutes(app: FastifyInstance) {
   const env = getServerEnv();
-  const stripe = new StripeService(env.STRIPE_SECRET_KEY);
-  const telnyx = new TelnyxService(env.TELNYX_API_KEY, env.TELNYX_PUBLIC_KEY ?? '');
+  const stripe = new StripeService({ secretKey: env.STRIPE_SECRET_KEY, webhookSecret: env.STRIPE_WEBHOOK_SECRET });
+  const telnyx = new TelnyxService({ apiKey: env.TELNYX_API_KEY, webhookSecret: env.TELNYX_WEBHOOK_SECRET ?? '' });
   const billing = new BillingService(db, stripe);
   const convos = new ConversationService(db);
 
@@ -23,8 +23,7 @@ export async function webhooksRoutes(app: FastifyInstance) {
 
       let event;
       try {
-        // request.rawBody is populated when Fastify is configured with addContentTypeParser for raw
-        event = stripe.constructWebhookEvent(request.body as Buffer, sig, env.STRIPE_WEBHOOK_SECRET);
+        event = stripe.constructWebhookEvent(request.body as Buffer, sig);
       } catch (err: unknown) {
         const msg = err instanceof Error ? err.message : 'Unknown error';
         app.log.warn({ err }, 'Stripe webhook signature verification failed');
@@ -35,13 +34,18 @@ export async function webhooksRoutes(app: FastifyInstance) {
         case 'customer.subscription.created':
         case 'customer.subscription.updated':
         case 'customer.subscription.deleted': {
-          const sub = event.data.object as { customer: string };
-          // Find org by Stripe customer ID and sync subscription
+          const sub = event.data.object as { customer: string; id: string; status: string; };
           const billingAccount = await db.billingAccount.findFirst({
-            where: { stripeCustomerId: sub.customer },
+            where: { stripeId: sub.customer },
           });
           if (billingAccount) {
-            await billing.syncStripeSubscription(billingAccount.organizationId);
+            await billing.syncStripeSubscription(
+              sub.id,
+              billingAccount.organizationId,
+              sub.status,
+              'GROWTH',
+              0,
+            );
           }
           break;
         }
@@ -75,13 +79,16 @@ export async function webhooksRoutes(app: FastifyInstance) {
       const body = msg.text;
 
       if (from && to && body) {
-        // Find conversation channel for this number
         const channel = await db.communicationChannel.findFirst({
-          where: { phoneNumber: to, channelType: 'SMS' },
+          where: { identifier: to, channel: 'SMS' },
         });
 
-        if (channel?.clientAccountId) {
-          // Find or create lead by phone
+        if (channel) {
+          if (!channel.clientAccountId) {
+            app.log.warn('Inbound SMS to channel without clientAccountId — skipping');
+            return reply.send({ received: true });
+          }
+
           let lead = await db.lead.findFirst({
             where: { phone: from, clientAccountId: channel.clientAccountId },
           });
@@ -89,18 +96,26 @@ export async function webhooksRoutes(app: FastifyInstance) {
           if (!lead) {
             lead = await db.lead.create({
               data: {
+                organizationId: channel.organizationId,
                 clientAccountId: channel.clientAccountId,
                 phone: from,
                 firstName: 'Unknown',
-                source: 'INBOUND_SMS',
+                source: 'SMS_INBOUND',
                 status: 'NEW',
-                pipelineStage: 'New Lead',
+                stage: 'New Lead',
               },
             });
           }
 
-          const convo = await convos.getOrCreateConversation(lead.id, 'SMS');
-          await convos.addMessage(convo.id, {
+          const convo = await convos.getOrCreateConversation({
+            organizationId: channel.organizationId,
+            clientAccountId: channel.clientAccountId,
+            leadId: lead.id,
+            channel: 'SMS',
+            channelId: channel.id,
+          });
+          await convos.addMessage({
+            conversationId: convo.id,
             body,
             channel: 'SMS',
             direction: 'INBOUND',

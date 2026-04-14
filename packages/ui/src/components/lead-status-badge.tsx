@@ -1,6 +1,7 @@
 import * as React from 'react';
-import { type LeadStatus } from '@aaos/types';
 import { Badge } from './badge';
+
+type LeadStatus = 'NEW' | 'CONTACTED' | 'QUALIFIED' | 'BOOKED' | 'WON' | 'LOST' | 'UNSUBSCRIBED';
 
 const STATUS_LABELS: Record<LeadStatus, string> = {
   NEW: 'New',
@@ -9,7 +10,7 @@ const STATUS_LABELS: Record<LeadStatus, string> = {
   BOOKED: 'Booked',
   WON: 'Won',
   LOST: 'Lost',
-  UNRESPONSIVE: 'Unresponsive',
+  UNSUBSCRIBED: 'Unsubscribed',
 };
 
 const STATUS_VARIANTS: Record<LeadStatus, 'new' | 'contacted' | 'qualified' | 'booked' | 'won' | 'lost' | 'outline'> = {
@@ -19,13 +20,18 @@ const STATUS_VARIANTS: Record<LeadStatus, 'new' | 'contacted' | 'qualified' | 'b
   BOOKED: 'booked',
   WON: 'won',
   LOST: 'lost',
-  UNRESPONSIVE: 'outline',
+  UNSUBSCRIBED: 'outline',
 };
 
 interface LeadStatusBadgeProps {
   status: LeadStatus;
+  className?: string;
 }
 
-export function LeadStatusBadge({ status }: LeadStatusBadgeProps) {
-  return <Badge variant={STATUS_VARIANTS[status]}>{STATUS_LABELS[status]}</Badge>;
+export function LeadStatusBadge({ status, className }: LeadStatusBadgeProps) {
+  return (
+    <Badge className={className} variant={STATUS_VARIANTS[status]}>
+      {STATUS_LABELS[status]}
+    </Badge>
+  );
 }

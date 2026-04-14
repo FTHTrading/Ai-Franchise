@@ -1,21 +1,21 @@
 'use client';
 
-import { useState } from 'react';
-import type { Lead } from '@aaos/types';
-import { LeadStatus } from '@aaos/types';
-import { cn, LeadStatusBadge, Card, CardContent } from '@aaos/ui';
-import { Phone, Mail, Calendar } from 'lucide-react';
+import type { Lead, LeadStatus } from '@aaos/types';
+import { LeadStatusBadge, Card, CardContent } from '@aaos/ui';
+import { Phone, Mail } from 'lucide-react';
 
 const COLUMNS: { status: LeadStatus; label: string }[] = [
-  { status: LeadStatus.NEW, label: 'New' },
-  { status: LeadStatus.CONTACTED, label: 'Contacted' },
-  { status: LeadStatus.QUALIFIED, label: 'Qualified' },
-  { status: LeadStatus.BOOKED, label: 'Booked' },
-  { status: LeadStatus.WON, label: 'Won' },
-  { status: LeadStatus.LOST, label: 'Lost' },
+  { status: 'NEW', label: 'New' },
+  { status: 'CONTACTED', label: 'Contacted' },
+  { status: 'QUALIFIED', label: 'Qualified' },
+  { status: 'BOOKED', label: 'Booked' },
+  { status: 'WON', label: 'Won' },
+  { status: 'LOST', label: 'Lost' },
 ];
 
 function LeadCard({ lead }: { lead: Lead }) {
+  const leadScore = typeof lead.customFields?.leadScore === 'number' ? lead.customFields.leadScore : null;
+
   return (
     <Card className="cursor-grab active:cursor-grabbing hover:shadow-md transition-shadow">
       <CardContent className="p-3 space-y-2">
@@ -39,10 +39,10 @@ function LeadCard({ lead }: { lead: Lead }) {
             </div>
           )}
         </div>
-        {lead.score !== undefined && lead.score !== null && (
+        {leadScore !== null && (
           <div className="flex items-center gap-1.5 text-xs text-muted-foreground">
             <span className="font-medium text-foreground">Score:</span>
-            <span>{lead.score}</span>
+            <span>{leadScore}</span>
           </div>
         )}
       </CardContent>
@@ -52,7 +52,6 @@ function LeadCard({ lead }: { lead: Lead }) {
 
 export function LeadsKanban({
   leads,
-  clientId,
 }: {
   leads: Lead[];
   clientId: string;

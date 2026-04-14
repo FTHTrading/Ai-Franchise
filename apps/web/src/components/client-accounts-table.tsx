@@ -13,19 +13,19 @@ import { ExternalLink } from 'lucide-react';
 
 const columns: ColumnDef<ClientAccount>[] = [
   {
-    accessorKey: 'businessName',
+    accessorKey: 'name',
     header: 'Business',
     cell: ({ row }) => (
       <div>
-        <p className="font-medium">{row.original.businessName}</p>
-        {row.original.businessWebsite && (
+        <p className="font-medium">{row.original.name}</p>
+        {row.original.website && (
           <a
-            href={row.original.businessWebsite}
+            href={row.original.website}
             target="_blank"
             rel="noopener noreferrer"
             className="flex items-center gap-1 text-xs text-muted-foreground hover:underline"
           >
-            {row.original.businessWebsite}
+            {row.original.website}
             <ExternalLink className="h-3 w-3" />
           </a>
         )}
@@ -33,12 +33,12 @@ const columns: ColumnDef<ClientAccount>[] = [
     ),
   },
   {
-    accessorKey: 'contactName',
+    accessorKey: 'email',
     header: 'Contact',
     cell: ({ row }) => (
       <div>
-        <p className="text-sm">{row.original.contactName ?? '—'}</p>
-        <p className="text-xs text-muted-foreground">{row.original.contactEmail ?? ''}</p>
+        <p className="text-sm">{row.original.email ?? '—'}</p>
+        <p className="text-xs text-muted-foreground">{row.original.phone ?? ''}</p>
       </div>
     ),
   },
@@ -94,8 +94,6 @@ export function ClientAccountsTable({ data }: { data: ClientAccount[] }) {
     <DataTable
       columns={columns}
       data={data}
-      searchKey="businessName"
-      searchPlaceholder="Search clients..."
     />
   );
 }

@@ -15,7 +15,7 @@ function ConversationRow({
   onClick: () => void;
 }) {
   const lastMsg = conversation.messages?.[0];
-  const unread = !conversation.resolvedAt && conversation.messages?.some((m: { read: boolean }) => !m.read);
+  const unread = !conversation.resolvedAt && conversation.messages?.some((message) => message.direction === 'INBOUND' && message.status !== 'READ');
 
   return (
     <button
@@ -42,7 +42,7 @@ function ConversationRow({
             </span>
           </div>
           <p className="text-xs text-muted-foreground truncate mt-0.5">
-            {lastMsg?.content ?? 'No messages yet'}
+            {lastMsg?.body ?? 'No messages yet'}
           </p>
           <div className="flex items-center gap-2 mt-1">
             {conversation.resolvedAt ? (
@@ -75,7 +75,7 @@ function MessageThread({ conversation }: { conversation: Conversation }) {
             No messages yet
           </p>
         )}
-        {conversation.messages?.map((msg: { id: string; direction: string; content: string; createdAt: string }) => (
+        {conversation.messages?.map((msg) => (
           <div
             key={msg.id}
             className={cn(
@@ -85,7 +85,7 @@ function MessageThread({ conversation }: { conversation: Conversation }) {
                 : 'bg-muted',
             )}
           >
-            <p>{msg.content}</p>
+            <p>{msg.body}</p>
             <p className={cn('text-[10px] mt-1', msg.direction === 'OUTBOUND' ? 'text-primary-foreground/70' : 'text-muted-foreground')}>
               {formatRelativeTime(String(msg.createdAt))}
             </p>

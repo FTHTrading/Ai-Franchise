@@ -1,7 +1,6 @@
 'use client';
 
-import type { WorkflowInstance } from '@aaos/types';
-import { WorkflowStatus } from '@aaos/types';
+import { WorkflowStatus, type WorkflowInstance } from '@aaos/types';
 import {
   Card,
   CardContent,
@@ -15,14 +14,14 @@ import {
 import { Play, Pause, Zap } from 'lucide-react';
 
 const statusVariant: Record<WorkflowStatus, 'success' | 'secondary' | 'warning' | 'default'> = {
-  [WorkflowStatus.ACTIVE]: 'success',
-  [WorkflowStatus.PAUSED]: 'secondary',
-  [WorkflowStatus.ARCHIVED]: 'secondary',
-  [WorkflowStatus.DRAFT]: 'warning',
+  ACTIVE: 'success',
+  PAUSED: 'secondary',
+  ARCHIVED: 'secondary',
+  DRAFT: 'warning',
 };
 
 function WorkflowCard({ workflow }: { workflow: WorkflowInstance }) {
-  const isActive = workflow.status === WorkflowStatus.ACTIVE;
+  const isActive = workflow.status === 'ACTIVE';
 
   return (
     <Card>

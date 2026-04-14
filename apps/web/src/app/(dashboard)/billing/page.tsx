@@ -58,7 +58,7 @@ async function BillingContent({ orgId }: { orgId: string }) {
               <div className="flex items-center justify-between">
                 <div>
                   <p className="font-semibold text-lg capitalize">
-                    {String(account?.plan ?? 'Starter')}
+                    {String(subscription?.tier ?? 'Starter')}
                   </p>
                   <p className="text-sm text-muted-foreground">
                     Renews on{' '}

@@ -1,10 +1,11 @@
 import { Worker, type Job } from 'bullmq';
 import { redis, QUEUES, type AiReplyJobPayload } from '../queues';
-import { prisma } from '@aaos/db';
-import { MessageGenerator } from '@aaos/ai';
+import { db } from '@aaos/db';
+import { AIProvider, MessageGenerator } from '@aaos/ai';
 import { TelnyxService } from '@aaos/integrations';
-import { env } from '@aaos/config';
-import { MessageDirection } from '@aaos/types';
+import { getServerEnv } from '@aaos/config';
+
+const env = getServerEnv();
 
 export function createAiReplyWorker() {
   return new Worker<AiReplyJobPayload>(
@@ -14,12 +15,12 @@ export function createAiReplyWorker() {
 
       console.log(`[ai-reply-worker] Processing job ${job.id} | conversation=${conversationId}`);
 
-      const conversation = await prisma.conversation.findUnique({
+      const conversation = await db.conversation.findUnique({
         where: { id: conversationId },
         include: {
           messages: { orderBy: { createdAt: 'desc' }, take: 10 },
           lead: true,
-          channel: true,
+          channel_record: true,
         },
       });
 
@@ -34,9 +35,9 @@ export function createAiReplyWorker() {
       }
 
       const lead = conversation.lead;
-      const channel = conversation.channel;
+      const channelRecord = conversation.channel_record;
 
-      if (!lead || !channel) {
+      if (!lead || !channelRecord) {
         console.warn(`[ai-reply-worker] Missing lead or channel for conversation ${conversationId}`);
         return;
       }
@@ -46,14 +47,20 @@ export function createAiReplyWorker() {
         .reverse()
         .map((m) => ({
           role: m.direction === 'INBOUND' ? ('user' as const) : ('assistant' as const),
-          content: m.content,
+          content: m.body,
         }));
 
-      const generator = new MessageGenerator();
-      const reply = await generator.generateReply({
-        lead: { firstName: lead.firstName, lastName: lead.lastName, status: lead.status },
-        history,
-        organizationId,
+      // Fetch org name for context
+      const org = await db.organization.findUnique({ where: { id: organizationId } });
+
+      const provider = new AIProvider({ openaiApiKey: env.OPENAI_API_KEY });
+      const generator = new MessageGenerator({ provider });
+      const reply = await generator.suggestReply({
+        businessName: org?.name ?? 'Our Business',
+        operatorName: 'Operator',
+        leadName: `${lead.firstName ?? ''} ${lead.lastName ?? ''}`.trim() || 'there',
+        conversationHistory: history.map((h) => `${h.role}: ${h.content}`).join('\n'),
+        latestMessage: history[history.length - 1]?.content ?? '',
       });
 
       if (!reply) {
@@ -62,29 +69,29 @@ export function createAiReplyWorker() {
       }
 
       // Send via Telnyx
-      const telnyx = new TelnyxService(env.TELNYX_API_KEY);
+      const telnyx = new TelnyxService({ apiKey: env.TELNYX_API_KEY });
       await telnyx.sendSms({
-        from: channel.phoneNumber,
+        from: channelRecord.identifier,
         to: lead.phone!,
-        text: reply,
+        body: reply.text,
       });
 
       // Save outbound message
-      await prisma.message.create({
+      await db.message.create({
         data: {
           conversationId,
-          content: reply,
-          direction: MessageDirection.OUTBOUND,
+          body: reply.text,
+          direction: 'OUTBOUND',
           channel: 'SMS',
-          aiGenerated: true,
-          read: true,
+          isAiGenerated: true,
+          status: 'SENT',
         },
       });
 
       // Update conversation lastMessageAt
-      await prisma.conversation.update({
+      await db.conversation.update({
         where: { id: conversationId },
-        data: { updatedAt: new Date() },
+        data: { lastMessageAt: new Date() },
       });
 
       console.log(`[ai-reply-worker] Sent AI reply for conversation ${conversationId}`);

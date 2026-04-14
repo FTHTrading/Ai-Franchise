@@ -1,6 +1,6 @@
 import { Suspense } from 'react';
 import { auth } from '@clerk/nextjs/server';
-import { PageHeader, MetricCard, StatChart, LoadingPage } from '@aaos/ui';
+import { PageHeader, MetricCard, StatChart, LoadingPage, formatCurrency } from '@aaos/ui';
 import { Users, TrendingUp, MessageSquare, Calendar, Workflow } from 'lucide-react';
 import { getAgencyMetrics } from '@/lib/api';
 
@@ -32,7 +32,6 @@ async function DashboardMetrics({ orgId }: { orgId: string }) {
           value={metrics.mrr}
           format="currency"
           icon={TrendingUp}
-          trend={metrics.mrrGrowth}
         />
         <MetricCard
           title="Active Clients"
@@ -83,7 +82,7 @@ async function DashboardMetrics({ orgId }: { orgId: string }) {
           title="Revenue Trend"
           data={[]}
           type="area"
-          format="currency"
+          formatValue={formatCurrency}
           description="MRR over time"
         />
       </div>

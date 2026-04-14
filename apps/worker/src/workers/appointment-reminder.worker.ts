@@ -1,9 +1,10 @@
 import { Worker, type Job } from 'bullmq';
 import { redis, QUEUES, type AppointmentReminderJobPayload } from '../queues';
-import { prisma } from '@aaos/db';
+import { db } from '@aaos/db';
 import { TelnyxService } from '@aaos/integrations';
-import { env } from '@aaos/config';
-import { MessageDirection } from '@aaos/types';
+import { getServerEnv } from '@aaos/config';
+
+const env = getServerEnv();
 
 export function createAppointmentReminderWorker() {
   return new Worker<AppointmentReminderJobPayload>(
@@ -15,7 +16,7 @@ export function createAppointmentReminderWorker() {
         `[appt-reminder-worker] Sending ${reminderType} reminder for appointment ${appointmentId}`,
       );
 
-      const appt = await prisma.appointment.findUnique({
+      const appt = await db.appointment.findUnique({
         where: { id: appointmentId },
         include: { lead: true },
       });
@@ -39,41 +40,47 @@ export function createAppointmentReminderWorker() {
       const timeLabel = reminderType === '24h' ? 'tomorrow' : 'in 1 hour';
       const message =
         `Hi ${lead.firstName}! Just a reminder that you have an appointment ${timeLabel} — ` +
-        `${appt.title ?? 'your appointment'} at ${new Date(appt.scheduledAt).toLocaleTimeString('en-US', { hour: 'numeric', minute: '2-digit' })}. ` +
+        `${appt.title ?? 'your appointment'} at ${new Date(appt.startAt).toLocaleTimeString('en-US', { hour: 'numeric', minute: '2-digit' })}. ` +
         `Reply CONFIRM to confirm or CANCEL to cancel.`;
 
-      // Find org's channel
-      const channel = await prisma.communicationChannel.findFirst({
-        where: { organizationId, isActive: true, type: 'SMS' },
+      // Find org's SMS channel
+      const channelRecord = await db.communicationChannel.findFirst({
+        where: { organizationId, isActive: true, channel: 'SMS' },
       });
 
-      if (!channel?.phoneNumber) {
+      if (!channelRecord?.identifier) {
         console.warn(`[appt-reminder-worker] No active SMS channel for org ${organizationId}`);
         return;
       }
 
-      const telnyx = new TelnyxService(env.TELNYX_API_KEY);
-      await telnyx.sendSms({ from: channel.phoneNumber, to: lead.phone, text: message });
+      const telnyx = new TelnyxService({ apiKey: env.TELNYX_API_KEY });
+      await telnyx.sendSms({ from: channelRecord.identifier, to: lead.phone, body: message });
 
       // Find or create conversation and log the message
-      let conversation = await prisma.conversation.findFirst({
+      let conversation = await db.conversation.findFirst({
         where: { leadId: lead.id, organizationId },
       });
 
       if (!conversation) {
-        conversation = await prisma.conversation.create({
-          data: { leadId: lead.id, organizationId, channelId: channel.id },
+        conversation = await db.conversation.create({
+          data: {
+            leadId: lead.id,
+            organizationId,
+            clientAccountId: lead.clientAccountId,
+            channelId: channelRecord.id,
+            channel: 'SMS',
+          },
         });
       }
 
-      await prisma.message.create({
+      await db.message.create({
         data: {
           conversationId: conversation.id,
-          content: message,
-          direction: MessageDirection.OUTBOUND,
+          body: message,
+          direction: 'OUTBOUND',
           channel: 'SMS',
-          aiGenerated: true,
-          read: true,
+          isAiGenerated: true,
+          status: 'SENT',
         },
       });
 

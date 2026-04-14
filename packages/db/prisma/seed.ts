@@ -1,13 +1,6 @@
 import { PrismaClient } from '@prisma/client';
-import { hash } from 'crypto';
 
 const prisma = new PrismaClient();
-
-// ── Helpers ───────────────────────────────────────────────────────────────
-
-function uuid() {
-  return crypto.randomUUID();
-}
 
 // ── Seed data ─────────────────────────────────────────────────────────────
 
@@ -23,12 +16,11 @@ async function main() {
       clerkOrgId: 'org_demo_apex_agency',
       name: 'Apex Marketing Agency',
       slug: 'apex-marketing',
-      plan: 'GROWTH',
       brandSettings: {
         create: {
           primaryColor: '#6366f1',
           logoUrl: null,
-          companyName: 'Apex Marketing Agency',
+          brandName: 'Apex Marketing Agency',
         },
       },
       onboardingState: {
@@ -40,10 +32,9 @@ async function main() {
       },
       billingAccount: {
         create: {
-          stripeCustomerId: 'cus_demo_apex',
-          stripePriceId: 'price_demo_growth',
-          plan: 'GROWTH',
-          status: 'ACTIVE',
+          stripeId: 'cus_demo_apex',
+          email: 'owner@apexmarketing.demo',
+          name: 'Apex Marketing Agency',
         },
       },
     },
@@ -54,14 +45,14 @@ async function main() {
   // ── Agency member ─────────────────────────────────────────────────────
 
   const user = await prisma.user.upsert({
-    where: { clerkUserId: 'user_demo_owner' },
+    where: { clerkId: 'user_demo_owner' },
     update: {},
     create: {
-      clerkUserId: 'user_demo_owner',
+      clerkId: 'user_demo_owner',
       email: 'owner@apexmarketing.demo',
       firstName: 'Alex',
       lastName: 'Owner',
-      memberships: {
+      organizationMemberships: {
         create: {
           organizationId: org.id,
           role: 'ORGANIZATION_OWNER',
@@ -74,24 +65,19 @@ async function main() {
 
   // ── SMS channel ───────────────────────────────────────────────────────
 
-  const channel = await prisma.communicationChannel.upsert({
-    where: {
-      organizationId_phoneNumber: {
-        organizationId: org.id,
-        phoneNumber: '+17705550100',
-      },
-    },
-    update: {},
-    create: {
+  const channel = await prisma.communicationChannel.create({
+    data: {
       organizationId: org.id,
-      type: 'SMS',
-      phoneNumber: '+17705550100',
-      telnyxPhoneNumberId: 'telnyx_demo_123',
+      channel: 'SMS',
+      name: 'Primary SMS',
+      identifier: '+17705550100',
+      provider: 'TELNYX',
+      config: { telnyxPhoneNumberId: 'telnyx_demo_123' },
       isActive: true,
     },
   });
 
-  console.log(`  ✓ Channel: ${channel.phoneNumber}`);
+  console.log(`  ✓ Channel: ${channel.identifier}`);
 
   // ── Client accounts ───────────────────────────────────────────────────
 
@@ -102,10 +88,10 @@ async function main() {
       create: {
         id: 'demo-client-001',
         organizationId: org.id,
-        businessName: 'Smith HVAC',
-        contactName: 'Tom Smith',
-        contactEmail: 'tom@smithhvac.demo',
-        contactPhone: '+17705550201',
+        name: 'Smith HVAC',
+        slug: 'smith-hvac',
+        email: 'tom@smithhvac.demo',
+        phone: '+17705550201',
         industry: 'HOME_SERVICES',
         isActive: true,
       },
@@ -116,10 +102,10 @@ async function main() {
       create: {
         id: 'demo-client-002',
         organizationId: org.id,
-        businessName: 'Premier Dental',
-        contactName: 'Dr. Maria Chen',
-        contactEmail: 'maria@premierdental.demo',
-        contactPhone: '+17705550202',
+        name: 'Premier Dental',
+        slug: 'premier-dental',
+        email: 'maria@premierdental.demo',
+        phone: '+17705550202',
         industry: 'DENTAL',
         isActive: true,
       },
@@ -130,34 +116,34 @@ async function main() {
       create: {
         id: 'demo-client-003',
         organizationId: org.id,
-        businessName: 'Cornerstone Law',
-        contactName: 'James Williams',
-        contactEmail: 'james@cornerstonelaw.demo',
-        contactPhone: '+17705550203',
+        name: 'Cornerstone Law',
+        slug: 'cornerstone-law',
+        email: 'james@cornerstonelaw.demo',
+        phone: '+17705550203',
         industry: 'LEGAL',
         isActive: true,
       },
     }),
   ]);
 
-  console.log(`  ✓ Client accounts: ${clients.map((c) => c.businessName).join(', ')}`);
+  console.log(`  ✓ Client accounts: ${clients.map((c) => c.name).join(', ')}`);
 
   // ── Leads ─────────────────────────────────────────────────────────────
 
   const leadsData = [
     // Smith HVAC leads
-    { id: 'demo-lead-001', clientId: 'demo-client-001', first: 'John', last: 'Martinez', phone: '+17705551001', status: 'NEW', score: 45 },
-    { id: 'demo-lead-002', clientId: 'demo-client-001', first: 'Lisa', last: 'Johnson', phone: '+17705551002', status: 'CONTACTED', score: 62 },
-    { id: 'demo-lead-003', clientId: 'demo-client-001', first: 'Bob', last: 'Anderson', phone: '+17705551003', status: 'QUALIFIED', score: 78 },
-    { id: 'demo-lead-004', clientId: 'demo-client-001', first: 'Sarah', last: 'Williams', phone: '+17705551004', status: 'BOOKED', score: 88 },
-    { id: 'demo-lead-005', clientId: 'demo-client-001', first: 'Mike', last: 'Davis', phone: '+17705551005', status: 'WON', score: 95 },
+    { id: 'demo-lead-001', clientId: 'demo-client-001', first: 'John', last: 'Martinez', phone: '+17705551001', status: 'NEW' },
+    { id: 'demo-lead-002', clientId: 'demo-client-001', first: 'Lisa', last: 'Johnson', phone: '+17705551002', status: 'CONTACTED' },
+    { id: 'demo-lead-003', clientId: 'demo-client-001', first: 'Bob', last: 'Anderson', phone: '+17705551003', status: 'QUALIFIED' },
+    { id: 'demo-lead-004', clientId: 'demo-client-001', first: 'Sarah', last: 'Williams', phone: '+17705551004', status: 'BOOKED' },
+    { id: 'demo-lead-005', clientId: 'demo-client-001', first: 'Mike', last: 'Davis', phone: '+17705551005', status: 'WON' },
     // Premier Dental leads
-    { id: 'demo-lead-006', clientId: 'demo-client-002', first: 'Amy', last: 'Lee', phone: '+17705551006', status: 'NEW', score: 30 },
-    { id: 'demo-lead-007', clientId: 'demo-client-002', first: 'Carlos', last: 'Garcia', phone: '+17705551007', status: 'CONTACTED', score: 55 },
-    { id: 'demo-lead-008', clientId: 'demo-client-002', first: 'Rachel', last: 'Brown', phone: '+17705551008', status: 'BOOKED', score: 82 },
+    { id: 'demo-lead-006', clientId: 'demo-client-002', first: 'Amy', last: 'Lee', phone: '+17705551006', status: 'NEW' },
+    { id: 'demo-lead-007', clientId: 'demo-client-002', first: 'Carlos', last: 'Garcia', phone: '+17705551007', status: 'CONTACTED' },
+    { id: 'demo-lead-008', clientId: 'demo-client-002', first: 'Rachel', last: 'Brown', phone: '+17705551008', status: 'BOOKED' },
     // Cornerstone Law leads
-    { id: 'demo-lead-009', clientId: 'demo-client-003', first: 'David', last: 'Miller', phone: '+17705551009', status: 'NEW', score: 40 },
-    { id: 'demo-lead-010', clientId: 'demo-client-003', first: 'Emma', last: 'Wilson', phone: '+17705551010', status: 'QUALIFIED', score: 71 },
+    { id: 'demo-lead-009', clientId: 'demo-client-003', first: 'David', last: 'Miller', phone: '+17705551009', status: 'NEW' },
+    { id: 'demo-lead-010', clientId: 'demo-client-003', first: 'Emma', last: 'Wilson', phone: '+17705551010', status: 'QUALIFIED' },
   ];
 
   for (const l of leadsData) {
@@ -172,8 +158,7 @@ async function main() {
         lastName: l.last,
         phone: l.phone,
         status: l.status as never,
-        score: l.score,
-        source: 'WEBSITE',
+        source: 'WEBSITE_FORM',
       },
     });
   }
@@ -188,6 +173,8 @@ async function main() {
     create: {
       id: 'demo-conv-001',
       organizationId: org.id,
+      clientAccountId: 'demo-client-001',
+      channel: 'SMS',
       leadId: 'demo-lead-002',
       channelId: channel.id,
       aiEnabled: true,
@@ -199,25 +186,25 @@ async function main() {
     data: [
       {
         conversationId: conv.id,
-        content: "Hi, I saw your ad online and I'm interested in getting my AC serviced.",
+        body: "Hi, I saw your ad online and I'm interested in getting my AC serviced.",
         direction: 'INBOUND',
         channel: 'SMS',
-        read: true,
+        status: 'READ',
       },
       {
         conversationId: conv.id,
-        content: "Hi Lisa! Thanks for reaching out. We'd love to help. When would be a good time for a tech to come take a look?",
+        body: "Hi Lisa! Thanks for reaching out. We'd love to help. When would be a good time for a tech to come take a look?",
         direction: 'OUTBOUND',
         channel: 'SMS',
-        aiGenerated: true,
-        read: true,
+        isAiGenerated: true,
+        status: 'DELIVERED',
       },
       {
         conversationId: conv.id,
-        content: "Maybe Thursday afternoon between 2-5pm?",
+        body: "Maybe Thursday afternoon between 2-5pm?",
         direction: 'INBOUND',
         channel: 'SMS',
-        read: false,
+        status: 'PENDING',
       },
     ],
   });
@@ -226,49 +213,48 @@ async function main() {
 
   // ── Workflow template + instance ──────────────────────────────────────
 
-  const template = await prisma.workflowTemplate.upsert({
-    where: { slug: 'new-lead-5step-followup' },
-    update: {},
-    create: {
-      slug: 'new-lead-5step-followup',
+  const tmpl = await prisma.template.create({
+    data: {
+      organizationId: org.id,
       name: '5-Step New Lead Follow-Up',
       description: 'Automated SMS drip sequence for new leads over 7 days.',
       category: 'LEAD_FOLLOWUP',
-      isBuiltIn: true,
-      stepCount: 5,
-      definition: {
-        trigger: 'lead.created',
-        steps: [
-          { delay: 0, type: 'sms', template: 'immediate_followup' },
-          { delay: 3600, type: 'sms', template: 'first_hour' },
-          { delay: 86400, type: 'sms', template: 'day_1' },
-          { delay: 259200, type: 'sms', template: 'day_3' },
-          { delay: 604800, type: 'sms', template: 'day_7' },
-        ],
-      },
+      triggerType: 'NEW_LEAD',
+      isSystem: true,
+      steps: [
+        { id: 's1', type: 'SEND_SMS', label: 'Immediate followup', config: {} },
+        { id: 's2', type: 'WAIT_DELAY', label: 'Wait 1 hour', config: {}, delayMs: 3600000 },
+        { id: 's3', type: 'SEND_SMS', label: 'Day 1 followup', config: {} },
+        { id: 's4', type: 'WAIT_DELAY', label: 'Wait to day 3', config: {}, delayMs: 172800000 },
+        { id: 's5', type: 'SEND_SMS', label: 'Day 7 followup', config: {} },
+      ],
     },
   });
 
-  await prisma.workflowInstance.upsert({
-    where: { id: 'demo-workflow-001' },
-    update: {},
-    create: {
-      id: 'demo-workflow-001',
+  await prisma.workflow.create({
+    data: {
       organizationId: org.id,
-      templateId: template.id,
+      templateId: tmpl.id,
       clientAccountId: 'demo-client-001',
       name: 'Smith HVAC — New Lead Follow-Up',
+      triggerType: 'NEW_LEAD',
+      triggerConfig: { type: 'NEW_LEAD' },
+      steps: tmpl.steps as never,
       status: 'ACTIVE',
+      publishedAt: new Date(),
     },
   });
 
-  console.log(`  ✓ Workflow: ${template.name} installed for Smith HVAC`);
+  console.log(`  ✓ Workflow: ${tmpl.name} installed for Smith HVAC`);
 
   // ── Appointment ───────────────────────────────────────────────────────
 
   const tomorrow = new Date();
   tomorrow.setDate(tomorrow.getDate() + 1);
   tomorrow.setHours(14, 0, 0, 0);
+
+  const endAt = new Date(tomorrow);
+  endAt.setHours(15, 0, 0, 0);
 
   await prisma.appointment.upsert({
     where: { id: 'demo-appt-001' },
@@ -279,8 +265,8 @@ async function main() {
       leadId: 'demo-lead-004',
       clientAccountId: 'demo-client-001',
       title: 'AC Service Consultation',
-      scheduledAt: tomorrow,
-      durationMinutes: 60,
+      startAt: tomorrow,
+      endAt,
       status: 'CONFIRMED',
     },
   });

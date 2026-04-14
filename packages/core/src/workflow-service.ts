@@ -21,20 +21,20 @@ export class WorkflowService {
 
     // Find or create the template record
     let templateRecord = await this.db.template.findFirst({
-      where: { organizationId: params.organizationId, key: params.templateKey },
+      where: { organizationId: params.organizationId, name: template.title, isSystem: true },
     });
 
     if (!templateRecord) {
       templateRecord = await this.db.template.create({
         data: {
           organizationId: params.organizationId,
-          key: params.templateKey,
-          title: template.title,
+          name: template.title,
           description: template.description,
           category: template.category as never,
-          workflowDefinition: template.definition as never,
-          variableDefaults: template.variableDefaults,
-          isBuiltIn: true,
+          triggerType: template.definition.trigger.type as never,
+          steps: template.definition.steps as never,
+          variables: template.variableDefaults,
+          isSystem: true,
         },
       });
     }
@@ -113,10 +113,10 @@ export class WorkflowService {
     workflowId: string;
     leadId: string;
     organizationId: string;
-    clientAccountId: string;
+    triggeredBy?: string;
     status: 'COMPLETED' | 'FAILED' | 'CANCELLED';
-    stepResults: unknown[];
-    durationMs: number;
+    steps?: unknown[];
+    duration: number;
     failureReason?: string;
   }) {
     return this.db.workflowExecution.create({
@@ -124,10 +124,10 @@ export class WorkflowService {
         workflowId: params.workflowId,
         leadId: params.leadId,
         organizationId: params.organizationId,
-        clientAccountId: params.clientAccountId,
+        triggeredBy: params.triggeredBy ?? 'system',
         status: params.status,
-        stepResults: params.stepResults as never,
-        durationMs: params.durationMs,
+        steps: (params.steps ?? []) as never,
+        duration: params.duration,
         failureReason: params.failureReason,
         completedAt: new Date(),
       },
@@ -154,7 +154,7 @@ export class WorkflowService {
       where: { organizationId, deletedAt: null },
       orderBy: { createdAt: 'desc' },
       include: {
-        template: { select: { title: true, category: true } },
+        template: { select: { name: true, category: true } },
         _count: { select: { executions: true } },
       },
     });

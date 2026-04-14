@@ -2,16 +2,13 @@ import { type FastifyInstance, type FastifyRequest } from 'fastify';
 import { z } from 'zod';
 import { db } from '@aaos/db';
 import { hasPermission } from '@aaos/auth';
-import { type AuthContext } from '@aaos/types';
 import { authenticate } from '../middleware/auth';
-
-type AuthReq = FastifyRequest & { authContext: AuthContext };
 
 export async function clientAccountsRoutes(app: FastifyInstance) {
   app.addHook('preHandler', authenticate);
 
   // GET /client-accounts — list all client accounts for the org
-  app.get('/client-accounts', async (request: AuthReq, reply) => {
+  app.get('/client-accounts', async (request, reply) => {
     const { organizationId } = request.authContext;
     if (!organizationId) return reply.code(403).send({ error: 'No org context' });
 
@@ -32,7 +29,7 @@ export async function clientAccountsRoutes(app: FastifyInstance) {
   });
 
   // GET /client-accounts/:id
-  app.get('/client-accounts/:id', async (request: AuthReq, reply) => {
+  app.get('/client-accounts/:id', async (request, reply) => {
     const { id } = request.params as { id: string };
     const { organizationId } = request.authContext;
 
@@ -45,25 +42,26 @@ export async function clientAccountsRoutes(app: FastifyInstance) {
   });
 
   // POST /client-accounts
-  app.post('/client-accounts', async (request: AuthReq, reply) => {
+  app.post('/client-accounts', async (request, reply) => {
     const { organizationId, role } = request.authContext;
     if (!organizationId) return reply.code(403).send({ error: 'No org context' });
-    if (!hasPermission(role, 'clients:create')) return reply.code(403).send({ error: 'Forbidden' });
+    if (!hasPermission(role, 'clients:write')) return reply.code(403).send({ error: 'Forbidden' });
 
     const body = CreateClientSchema.safeParse(request.body);
     if (!body.success) return reply.code(400).send({ error: 'Bad Request', details: body.error.flatten() });
 
+    const slug = body.data.name.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)/g, '');
     const account = await db.clientAccount.create({
-      data: { ...body.data, organizationId },
+      data: { ...body.data, organizationId, slug },
     });
     return reply.code(201).send({ account });
   });
 
   // PATCH /client-accounts/:id
-  app.patch('/client-accounts/:id', async (request: AuthReq, reply) => {
+  app.patch('/client-accounts/:id', async (request, reply) => {
     const { id } = request.params as { id: string };
     const { organizationId, role } = request.authContext;
-    if (!hasPermission(role, 'clients:edit')) return reply.code(403).send({ error: 'Forbidden' });
+    if (!hasPermission(role, 'clients:write')) return reply.code(403).send({ error: 'Forbidden' });
 
     const body = UpdateClientSchema.safeParse(request.body);
     if (!body.success) return reply.code(400).send({ error: 'Bad Request', details: body.error.flatten() });
@@ -77,7 +75,7 @@ export async function clientAccountsRoutes(app: FastifyInstance) {
   });
 
   // DELETE /client-accounts/:id — soft delete
-  app.delete('/client-accounts/:id', async (request: AuthReq, reply) => {
+  app.delete('/client-accounts/:id', async (request, reply) => {
     const { id } = request.params as { id: string };
     const { organizationId, role } = request.authContext;
     if (!hasPermission(role, 'clients:delete')) return reply.code(403).send({ error: 'Forbidden' });
@@ -94,7 +92,7 @@ const CreateClientSchema = z.object({
   name: z.string().min(1).max(200),
   email: z.string().email().optional(),
   phone: z.string().optional(),
-  niche: z.string().optional(),
+  industry: z.string().optional(),
   website: z.string().url().optional(),
   city: z.string().optional(),
   state: z.string().optional(),

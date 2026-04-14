@@ -1,6 +1,18 @@
 import type { PrismaClient } from '@aaos/db';
 import type { LeadCreateInput, LeadStatus, PaginatedResponse } from '@aaos/types';
 
+function stageToStatus(stage: string): LeadStatus {
+  const map: Record<string, LeadStatus> = {
+    'New Lead': 'NEW',
+    Contacted: 'CONTACTED',
+    Qualified: 'QUALIFIED',
+    Booked: 'BOOKED',
+    Won: 'WON',
+    Lost: 'LOST',
+  };
+  return map[stage] ?? 'NEW';
+}
+
 // ─────────────────────────────────────────────
 // LeadService — CRUD, stage transitions, activity
 // ─────────────────────────────────────────────
@@ -34,7 +46,7 @@ export class LeadService {
         source: (params.source as never) ?? 'OTHER',
         sourceDetail: params.sourceDetail,
         value: params.value,
-        customFields: params.customFields ?? {},
+        customFields: (params.customFields ?? {}) as never,
       },
     });
 
@@ -45,7 +57,7 @@ export class LeadService {
         entityType: 'Lead',
         entityId: lead.id,
         action: 'CREATE',
-        changes: { created: true },
+        after: { created: true },
       },
     });
 
@@ -74,7 +86,7 @@ export class LeadService {
     const limit = Math.min(filter.limit ?? 25, 100);
     const skip = (page - 1) * limit;
 
-    const where: Parameters<typeof this.db.lead.findMany>[0]['where'] = {
+    const where: Record<string, unknown> = {
       organizationId,
       clientAccountId,
       deletedAt: null,
@@ -141,9 +153,9 @@ export class LeadService {
         organizationId,
         entityType: 'Lead',
         entityId: leadId,
-        actorId,
+        userId: actorId,
         action: 'UPDATE',
-        changes: { stage: { from: previousStage, to: stage } },
+        after: { stage: { from: previousStage, to: stage } },
       },
     });
 
@@ -180,9 +192,9 @@ export class LeadService {
           organizationId,
           entityType: 'Lead',
           entityId: leadId,
-          actorId,
+          userId: actorId,
           action: 'DELETE',
-          changes: {},
+          after: {},
         },
       });
     }
@@ -195,16 +207,5 @@ export class LeadService {
       where: { id: leadId },
       data: { lastContactAt: new Date() },
     });
-  }
-}
-
-function stageToStatus(stage: string): 'NEW' | 'CONTACTED' | 'QUALIFIED' | 'BOOKED' | 'WON' | 'LOST' | 'UNSUBSCRIBED' {
-  switch (stage.toLowerCase()) {
-    case 'contacted': return 'CONTACTED';
-    case 'qualified': return 'QUALIFIED';
-    case 'booked': return 'BOOKED';
-    case 'won': return 'WON';
-    case 'lost': return 'LOST';
-    default: return 'NEW';
   }
 }
