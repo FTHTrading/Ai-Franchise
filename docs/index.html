@@ -3,334 +3,547 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>ScaleLogix AI &#x2014; Own Your AI Franchise</title>
-<meta name="description" content="Partner with ScaleLogix to launch your own AI automation agency. 50+ launches, $15M+ client revenue, proven systems. Own 100% of your agency.">
+<title>Ai-Franchise &#x2014; White-Label AI Operating System</title>
+<meta name="description" content="Launch a branded AI service business on production-grade infrastructure. Complete operating system, workflows, automation stack, and deployment framework for operators.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
 <style>
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
 :root{
-  --navy:#070b14;--navy2:#0d1525;--navy3:#111d35;
-  --blue:#2563eb;--blue-l:#3b82f6;--cyan:#06b6d4;
-  --green:#22c55e;--gold:#f59e0b;
-  --text:#f1f5f9;--muted:#94a3b8;--border:rgba(255,255,255,0.08);
-  --glow:rgba(37,99,235,0.35);
+  --bg:#070b14;
+  --bg2:#0c1525;
+  --bg3:#111e33;
+  --blue:#2563eb;
+  --blue-l:#3b82f6;
+  --green:#10b981;
+  --text:#e2e8f0;
+  --muted:#475569;
+  --label:#94a3b8;
+  --border:rgba(148,163,184,0.1);
+  --border2:rgba(148,163,184,0.2);
 }
 html{scroll-behavior:smooth}
-body{font-family:'Inter',system-ui,sans-serif;background:var(--navy);color:var(--text);line-height:1.6;-webkit-font-smoothing:antialiased}
+body{font-family:'Inter',system-ui,sans-serif;background:var(--bg);color:var(--text);line-height:1.6;-webkit-font-smoothing:antialiased}
+
 /* NAV */
-nav{position:sticky;top:0;z-index:100;display:flex;align-items:center;justify-content:space-between;padding:.9rem 2rem;background:rgba(7,11,20,.85);backdrop-filter:blur(16px);border-bottom:1px solid var(--border)}
-.nav-logo{font-weight:800;font-size:1.15rem;letter-spacing:-.02em}
+nav{position:sticky;top:0;z-index:100;display:flex;align-items:center;justify-content:space-between;padding:.85rem 2.5rem;background:rgba(7,11,20,0.93);backdrop-filter:blur(20px);border-bottom:1px solid var(--border)}
+.nav-logo{font-weight:800;font-size:1.05rem;letter-spacing:-.025em;color:var(--text);text-decoration:none}
 .nav-logo span{color:var(--blue-l)}
 .nav-links{display:flex;gap:1.8rem;list-style:none}
-.nav-links a{color:var(--muted);text-decoration:none;font-size:.9rem;font-weight:500;transition:color .2s}
+.nav-links a{color:var(--label);text-decoration:none;font-size:.875rem;font-weight:500;transition:color .15s}
 .nav-links a:hover{color:var(--text)}
-.nav-cta{background:var(--blue);color:#fff;padding:.5rem 1.2rem;border-radius:8px;text-decoration:none;font-size:.875rem;font-weight:600;transition:background .2s,transform .15s}
-.nav-cta:hover{background:var(--blue-l);transform:translateY(-1px)}
+.nav-actions{display:flex;gap:.7rem;align-items:center}
+.btn-sm-ghost{color:var(--label);text-decoration:none;font-size:.84rem;font-weight:500;padding:.42rem .9rem;border-radius:7px;border:1px solid var(--border);transition:all .15s}
+.btn-sm-ghost:hover{color:var(--text);border-color:var(--border2)}
+.btn-sm{background:var(--blue);color:#fff;text-decoration:none;font-size:.84rem;font-weight:600;padding:.42rem 1.1rem;border-radius:7px;transition:background .15s}
+.btn-sm:hover{background:var(--blue-l)}
+
+/* LAYOUT */
+.container{max-width:1100px;margin:0 auto;padding:0 2rem}
+.section-tag{font-size:.7rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--blue-l);margin-bottom:.75rem;display:block}
+.section-title{font-size:clamp(1.8rem,3.5vw,2.65rem);font-weight:800;letter-spacing:-.035em;line-height:1.14;margin-bottom:1rem}
+.section-body{color:var(--label);font-size:.975rem;line-height:1.82}
+
 /* HERO */
-.hero{position:relative;overflow:hidden;padding:6rem 2rem 5rem;text-align:center;background:radial-gradient(ellipse 80% 60% at 50% 0%,rgba(37,99,235,.18) 0%,transparent 70%),linear-gradient(180deg,var(--navy) 0%,var(--navy2) 100%)}
-.hero-badge{display:inline-block;background:rgba(37,99,235,.15);border:1px solid rgba(59,130,246,.35);color:var(--blue-l);padding:.35rem 1rem;border-radius:999px;font-size:.8rem;font-weight:600;letter-spacing:.06em;text-transform:uppercase;margin-bottom:1.6rem}
-.hero h1{font-size:clamp(2.4rem,6vw,4.2rem);font-weight:900;line-height:1.1;letter-spacing:-.03em;max-width:820px;margin:0 auto 1.4rem}
-.hero h1 .accent{color:var(--blue-l)}
-.hero-sub{font-size:clamp(1rem,2.2vw,1.2rem);color:var(--muted);max-width:580px;margin:0 auto 2.4rem;font-weight:400}
-.hero-btns{display:flex;gap:1rem;justify-content:center;flex-wrap:wrap}
-.btn-primary{background:var(--blue);color:#fff;padding:.85rem 2rem;border-radius:10px;text-decoration:none;font-weight:700;font-size:1rem;transition:all .2s;box-shadow:0 0 32px var(--glow)}
-.btn-primary:hover{background:var(--blue-l);transform:translateY(-2px);box-shadow:0 4px 40px var(--glow)}
-.btn-ghost{background:transparent;color:var(--text);padding:.85rem 2rem;border-radius:10px;text-decoration:none;font-weight:600;font-size:1rem;border:1px solid var(--border);transition:all .2s}
-.btn-ghost:hover{border-color:rgba(255,255,255,.25);background:rgba(255,255,255,.04)}
-/* STATS */
-.stat-strip{display:grid;grid-template-columns:repeat(auto-fit,minmax(170px,1fr));border-top:1px solid var(--border);border-bottom:1px solid var(--border);background:var(--navy2)}
-.stat-item{padding:1.8rem 1rem;text-align:center;border-right:1px solid var(--border)}
-.stat-item:last-child{border-right:none}
-.stat-num{font-size:2.2rem;font-weight:900;letter-spacing:-.04em;line-height:1}
-.stat-num.blue{color:var(--blue-l)}.stat-num.green{color:var(--green)}.stat-num.gold{color:var(--gold)}.stat-num.cyan{color:var(--cyan)}
-.stat-label{font-size:.8rem;color:var(--muted);margin-top:.4rem;font-weight:500}
-/* SECTIONS */
-section{padding:5rem 2rem}
-.container{max-width:1120px;margin:0 auto}
-.section-tag{display:inline-block;font-size:.75rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--blue-l);margin-bottom:.8rem}
-.section-title{font-size:clamp(1.75rem,4vw,2.8rem);font-weight:800;letter-spacing:-.03em;line-height:1.15;margin-bottom:1rem}
-.section-sub{color:var(--muted);font-size:1.05rem;max-width:600px}
-/* OPPORTUNITY */
-.opp{background:var(--navy2)}
-.opp-grid{display:grid;grid-template-columns:1fr 1fr;gap:2rem;margin-top:3rem;align-items:center}
-.opp-copy p{color:var(--muted);margin-bottom:1rem;line-height:1.8}
-.opp-cards{display:flex;flex-direction:column;gap:1rem}
-.opp-card{background:var(--navy3);border:1px solid var(--border);border-radius:14px;padding:1.4rem 1.6rem;display:flex;gap:1.2rem;align-items:flex-start}
-.opp-card-icon{width:44px;height:44px;border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:1.3rem;flex-shrink:0}
-.opp-card-icon.blue{background:rgba(37,99,235,.18)}.opp-card-icon.green{background:rgba(34,197,94,.15)}.opp-card-icon.gold{background:rgba(245,158,11,.15)}
-.opp-card h4{font-weight:700;font-size:.95rem;margin-bottom:.25rem}
-.opp-card p{color:var(--muted);font-size:.875rem;margin:0}
-/* GAP */
-.gap-section{background:var(--navy)}
-.gap-bars{display:grid;grid-template-columns:1fr 1fr;gap:2rem;margin-top:3rem}
-.gap-bar-label{display:flex;justify-content:space-between;margin-bottom:.5rem;font-size:.9rem;font-weight:600}
-.gap-bar-track{background:rgba(255,255,255,.07);border-radius:999px;height:14px;overflow:hidden}
-.gap-bar-fill{height:100%;border-radius:999px;transition:width 1.2s ease;width:0}
-.gap-caption{color:var(--muted);font-size:.8rem;margin-top:.4rem}
-.gap-callout{margin-top:3rem;background:linear-gradient(135deg,rgba(37,99,235,.15),rgba(6,182,212,.1));border:1px solid rgba(37,99,235,.3);border-radius:16px;padding:2rem 2.4rem;text-align:center}
-.gap-callout p{font-size:1.2rem;font-weight:600;color:var(--text)}
-.gap-callout span{color:var(--blue-l)}
-/* PROOF */
-.proof{background:var(--navy2)}
-.proof-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:1.5rem;margin-top:3rem}
-.proof-card{background:var(--navy3);border:1px solid var(--border);border-radius:14px;padding:1.6rem}
-.proof-card .check{color:var(--green);font-size:1.3rem;margin-bottom:.5rem}
-.proof-card h3{font-size:1.5rem;font-weight:900;letter-spacing:-.03em;color:var(--text);margin-bottom:.3rem}
-.proof-card p{color:var(--muted);font-size:.875rem}
-/* GET */
-.get-section{background:var(--navy)}
-.get-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:1.5rem;margin-top:3rem}
-.get-card{background:var(--navy2);border:1px solid var(--border);border-radius:16px;padding:2rem 1.8rem;transition:border-color .2s,transform .2s}
-.get-card:hover{border-color:rgba(59,130,246,.4);transform:translateY(-3px)}
-.get-card-num{font-size:.75rem;font-weight:700;color:var(--blue-l);letter-spacing:.1em;margin-bottom:1rem}
-.get-card h3{font-size:1.05rem;font-weight:700;margin-bottom:.5rem}
-.get-card p{color:var(--muted);font-size:.875rem}
-/* MARGINS */
-.margins{background:var(--navy2)}
-.margins-compare{display:grid;grid-template-columns:1fr 1fr;gap:2rem;margin-top:3rem}
-.margin-card{border-radius:16px;padding:2.2rem 2rem;text-align:center}
-.margin-card.theirs{background:rgba(255,255,255,.03);border:1px solid var(--border)}
-.margin-card.ours{background:linear-gradient(135deg,#1e3a8a 0%,#1e40af 100%);border:1px solid rgba(59,130,246,.4)}
-.margin-card .tag{font-size:.75rem;font-weight:700;letter-spacing:.08em;text-transform:uppercase;margin-bottom:.8rem;opacity:.7}
-.margin-card .pct{font-size:3.5rem;font-weight:900;letter-spacing:-.05em;line-height:1;margin-bottom:.4rem}
-.margin-card.theirs .pct{color:var(--muted)}.margin-card.ours .pct{color:#fff}
-.margin-card p{font-size:.875rem;opacity:.75}
-/* INVEST */
-.invest{background:var(--navy)}
-.invest-card{max-width:680px;margin:3rem auto 0;background:var(--navy2);border:1px solid var(--border);border-radius:20px;overflow:hidden}
-.invest-header{background:linear-gradient(135deg,#1e3a8a,#1d4ed8);padding:2rem 2.4rem}
-.invest-header h3{font-size:1.3rem;font-weight:800}
-.invest-header p{color:rgba(255,255,255,.7);font-size:.9rem;margin-top:.3rem}
-.invest-body{padding:2rem 2.4rem}
-.invest-row{display:flex;justify-content:space-between;padding:.75rem 0;border-bottom:1px solid var(--border)}
-.invest-row:last-child{border-bottom:none}
-.invest-row span:first-child{color:var(--muted);font-size:.9rem}
-.invest-row span:last-child{font-weight:700;font-size:.9rem}
-.invest-note{margin-top:1.5rem;font-size:.8rem;color:var(--muted);text-align:center;padding-bottom:1.5rem}
-/* CTA BANNER */
-.cta-banner{background:linear-gradient(135deg,#1e3a8a 0%,#1e40af 50%,#0369a1 100%);padding:5rem 2rem;text-align:center;position:relative;overflow:hidden}
-.cta-banner::before{content:'';position:absolute;inset:0;background:radial-gradient(ellipse 60% 80% at 50% 50%,rgba(99,179,237,.12) 0%,transparent 70%)}
-.cta-banner h2{font-size:clamp(1.8rem,4vw,3rem);font-weight:900;letter-spacing:-.03em;position:relative}
-.cta-banner p{color:rgba(255,255,255,.75);margin:1rem auto 2.4rem;max-width:520px;font-size:1.05rem;position:relative}
-.btn-white{background:#fff;color:#1e40af;padding:1rem 2.4rem;border-radius:10px;text-decoration:none;font-weight:800;font-size:1.05rem;position:relative;transition:all .2s;box-shadow:0 4px 24px rgba(0,0,0,.3);display:inline-block}
-.btn-white:hover{transform:translateY(-2px);box-shadow:0 8px 36px rgba(0,0,0,.4)}
-.cta-limit{margin-top:1.2rem;font-size:.8rem;color:rgba(255,255,255,.55);position:relative}
-/* ARCH DOCS */
-.arch-section{background:var(--navy2)}
-details summary{cursor:pointer;user-select:none;font-weight:700;font-size:1rem;color:var(--blue-l);padding:.6rem 0;list-style:none}
+.hero{padding:7rem 2rem 6rem;background:linear-gradient(175deg,var(--bg2) 0%,var(--bg) 60%);border-bottom:1px solid var(--border)}
+.hero-inner{max-width:820px}
+.hero-tag{display:inline-flex;align-items:center;gap:.5rem;background:rgba(37,99,235,.1);border:1px solid rgba(59,130,246,.22);color:var(--blue-l);padding:.32rem .95rem;border-radius:999px;font-size:.76rem;font-weight:700;letter-spacing:.08em;text-transform:uppercase;margin-bottom:2rem}
+.hero h1{font-size:clamp(2.2rem,5vw,3.75rem);font-weight:900;letter-spacing:-.04em;line-height:1.07;margin-bottom:1.5rem;color:#fff}
+.hero h1 em{font-style:normal;color:var(--blue-l)}
+.hero-sub{font-size:clamp(.975rem,2vw,1.12rem);color:var(--label);line-height:1.82;max-width:660px;margin-bottom:2.5rem}
+.hero-btns{display:flex;gap:.9rem;flex-wrap:wrap;margin-bottom:3rem}
+.btn-primary{background:var(--blue);color:#fff;padding:.78rem 1.75rem;border-radius:9px;text-decoration:none;font-weight:700;font-size:.93rem;transition:all .2s;display:inline-block}
+.btn-primary:hover{background:var(--blue-l);transform:translateY(-1px)}
+.btn-outline{background:transparent;color:var(--text);padding:.78rem 1.75rem;border-radius:9px;text-decoration:none;font-weight:600;font-size:.93rem;border:1px solid var(--border2);transition:all .2s;display:inline-block}
+.btn-outline:hover{background:rgba(255,255,255,.04);border-color:rgba(255,255,255,.28)}
+.hero-meta{display:flex;flex-wrap:wrap;gap:1.8rem}
+.hero-meta-item{display:flex;align-items:center;gap:.5rem;font-size:.83rem;color:var(--label)}
+.hero-meta-dot{width:6px;height:6px;border-radius:50%;background:var(--green);flex-shrink:0}
+
+/* WHAT */
+.what-section{padding:5.5rem 2rem;background:var(--bg)}
+.what-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1.25rem;margin-top:3rem}
+.what-card{background:var(--bg2);border:1px solid var(--border);border-radius:16px;padding:2rem;display:flex;flex-direction:column}
+.what-card-num{font-size:.72rem;font-weight:700;color:var(--blue-l);letter-spacing:.1em;margin-bottom:1.1rem}
+.what-card h3{font-size:1.05rem;font-weight:700;margin-bottom:.6rem;line-height:1.35;color:var(--text)}
+.what-card p{color:var(--label);font-size:.875rem;line-height:1.75;flex:1}
+.what-card-tag{display:inline-block;margin-top:1.3rem;font-size:.73rem;font-weight:600;padding:.22rem .65rem;border-radius:5px;background:rgba(37,99,235,.1);color:var(--blue-l);border:1px solid rgba(59,130,246,.18)}
+
+/* HOW */
+.how-section{padding:5.5rem 2rem;background:var(--bg2);border-top:1px solid var(--border);border-bottom:1px solid var(--border)}
+.how-steps{display:grid;grid-template-columns:repeat(3,1fr);gap:0;margin-top:3rem;border:1px solid var(--border);border-radius:16px;overflow:hidden}
+.how-step{position:relative;padding:2rem 1.8rem;border-right:1px solid var(--border);border-bottom:1px solid var(--border)}
+.how-step:nth-child(3n),.how-step:nth-child(3){border-right:none}
+.how-step:nth-child(4),.how-step:nth-child(5),.how-step:nth-child(6){border-bottom:none}
+.how-step-icon{width:38px;height:38px;border-radius:9px;background:rgba(37,99,235,.12);border:1px solid rgba(59,130,246,.2);display:flex;align-items:center;justify-content:center;font-size:1rem;margin-bottom:1rem}
+.how-step-num{font-size:.7rem;font-weight:700;color:var(--blue-l);letter-spacing:.1em;margin-bottom:.5rem}
+.how-step h4{font-size:.93rem;font-weight:700;margin-bottom:.4rem;color:var(--text)}
+.how-step p{color:var(--label);font-size:.84rem;line-height:1.72}
+
+/* STACK */
+.stack-section{padding:5.5rem 2rem;background:var(--bg)}
+.stack-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(210px,1fr));gap:1px;border:1px solid var(--border);border-radius:16px;overflow:hidden;margin-top:3rem;background:var(--border)}
+.stack-item{background:var(--bg);padding:1.65rem 1.75rem;transition:background .15s}
+.stack-item:hover{background:var(--bg2)}
+.stack-item-icon{font-size:1.25rem;margin-bottom:.75rem;line-height:1}
+.stack-item h4{font-size:.88rem;font-weight:700;margin-bottom:.3rem;color:var(--text)}
+.stack-item p{color:var(--label);font-size:.8rem;line-height:1.65}
+
+/* WHO */
+.who-section{padding:5.5rem 2rem;background:var(--bg2);border-top:1px solid var(--border);border-bottom:1px solid var(--border)}
+.who-layout{display:grid;grid-template-columns:1.1fr 1fr;gap:4rem;margin-top:3rem;align-items:start}
+.who-list{display:flex;flex-direction:column;gap:.7rem}
+.who-item{display:flex;align-items:flex-start;gap:1rem;padding:1.15rem 1.4rem;background:var(--bg3);border:1px solid var(--border);border-radius:12px}
+.who-check{width:22px;height:22px;border-radius:6px;background:rgba(16,185,129,.1);border:1px solid rgba(16,185,129,.22);display:flex;align-items:center;justify-content:center;font-size:.72rem;color:var(--green);flex-shrink:0;margin-top:.1rem;font-weight:700}
+.who-item h4{font-size:.9rem;font-weight:700;margin-bottom:.2rem;color:var(--text)}
+.who-item p{color:var(--label);font-size:.82rem;line-height:1.6}
+.who-not{margin-top:1.5rem;padding:1.2rem 1.4rem;background:rgba(239,68,68,.05);border:1px solid rgba(239,68,68,.14);border-radius:12px;font-size:.84rem;color:var(--label);line-height:1.7}
+.who-not strong{color:#fca5a5}
+.margin-block{border-radius:14px;padding:1.8rem;margin-bottom:1.2rem}
+.margin-block.theirs{background:var(--bg3);border:1px solid var(--border)}
+.margin-block.ours{background:rgba(37,99,235,.1);border:1px solid rgba(59,130,246,.22)}
+.margin-block .m-tag{font-size:.72rem;font-weight:700;letter-spacing:.09em;text-transform:uppercase;margin-bottom:.5rem}
+.margin-block.theirs .m-tag{color:var(--label)}.margin-block.ours .m-tag{color:var(--blue-l)}
+.margin-block .m-pct{font-size:2.6rem;font-weight:900;letter-spacing:-.05em;line-height:1;margin-bottom:.3rem}
+.margin-block.theirs .m-pct{color:var(--muted)}.margin-block.ours .m-pct{color:#fff}
+.margin-block p{font-size:.82rem;color:var(--label)}
+.margin-note{font-size:.74rem;color:var(--muted);line-height:1.7;margin-top:.8rem}
+
+/* DIFF */
+.diff-section{padding:5.5rem 2rem;background:var(--bg)}
+.diff-table{margin-top:3rem;border:1px solid var(--border);border-radius:14px;overflow:hidden}
+.diff-header{display:grid;grid-template-columns:1.4fr 1fr 1fr;background:var(--bg2);border-bottom:1px solid var(--border)}
+.diff-header div{padding:.9rem 1.4rem;font-size:.72rem;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--label)}
+.diff-header .ours-col{color:var(--blue-l)}
+.diff-row{display:grid;grid-template-columns:1.4fr 1fr 1fr;border-bottom:1px solid var(--border)}
+.diff-row:last-child{border-bottom:none}
+.diff-row div{padding:.95rem 1.4rem;font-size:.84rem}
+.diff-row .dim-col{color:var(--label);font-size:.82rem}
+.diff-row .their-col{color:var(--muted);font-size:.82rem}
+.diff-row .ours-col{color:var(--green);font-size:.82rem;background:rgba(16,185,129,.03)}
+
+/* OWNERSHIP */
+.own-section{padding:5.5rem 2rem;background:var(--bg2);border-top:1px solid var(--border);border-bottom:1px solid var(--border)}
+.own-grid{display:grid;grid-template-columns:1fr 1.1fr;gap:4rem;margin-top:3rem;align-items:start}
+.own-list{display:flex;flex-direction:column;gap:.55rem;margin-top:2rem}
+.own-item{display:flex;align-items:center;gap:.85rem;padding:.85rem 1.2rem;background:var(--bg3);border:1px solid var(--border);border-radius:10px}
+.own-item-dot{width:7px;height:7px;border-radius:50%;background:var(--blue-l);flex-shrink:0}
+.own-item span{font-size:.88rem;font-weight:500;color:var(--text)}
+.own-copy{font-size:.93rem;color:var(--label);line-height:1.85}
+.own-copy p{margin-bottom:1.1rem}
+.own-copy p:last-child{margin-bottom:0}
+.own-copy strong{color:var(--text);font-weight:600}
+
+/* CTA */
+.cta-section{padding:6.5rem 2rem;background:var(--bg);border-top:1px solid var(--border);text-align:center}
+.cta-inner{max-width:580px;margin:0 auto}
+.cta-section h2{font-size:clamp(1.8rem,3.8vw,2.75rem);font-weight:900;letter-spacing:-.035em;line-height:1.15;margin-bottom:1rem;color:#fff}
+.cta-section p{color:var(--label);font-size:.975rem;line-height:1.8;margin-bottom:2.5rem;max-width:520px;margin-left:auto;margin-right:auto}
+.btn-cta{background:var(--blue);color:#fff;padding:.95rem 2.2rem;border-radius:10px;text-decoration:none;font-weight:700;font-size:.975rem;transition:all .2s;display:inline-block}
+.btn-cta:hover{background:var(--blue-l);transform:translateY(-2px)}
+.cta-limit{margin-top:1.2rem;font-size:.78rem;color:var(--muted)}
+
+/* COMPLIANCE */
+.compliance{padding:1.75rem 2.5rem;background:var(--bg2);border-top:1px solid var(--border)}
+.compliance-inner{max-width:960px;margin:0 auto;font-size:.76rem;color:var(--muted);line-height:1.82}
+.compliance-inner strong{color:var(--label);font-weight:600}
+
+/* ARCH */
+.arch-section{padding:4.5rem 2rem;background:var(--bg);border-top:1px solid var(--border)}
+details{border-bottom:1px solid var(--border);padding-bottom:1rem;margin-bottom:1rem}
+details:last-child{border-bottom:none}
+details summary{cursor:pointer;user-select:none;font-weight:600;font-size:.92rem;color:var(--label);padding:.5rem 0;list-style:none;display:flex;align-items:center;gap:.6rem;transition:color .15s}
+details summary:hover{color:var(--text)}
 details summary::-webkit-details-marker{display:none}
-details summary::before{content:"▶  ";font-size:.7rem}
-details[open] summary::before{content:"▼  "}
-.arch-card{background:var(--navy3);border:1px solid var(--border);border-radius:14px;padding:1.4rem;margin-bottom:1rem;margin-top:.8rem}
-.arch-card h3{font-size:.95rem;font-weight:700;margin-bottom:.8rem;color:var(--text)}
-pre{overflow-x:auto;border-radius:10px;padding:1rem;background:rgba(0,0,0,.4);border:1px solid var(--border);font-size:.82rem;color:#94a3b8;line-height:1.7}
-.chip-row{display:flex;flex-wrap:wrap;gap:.5rem;margin-top:.8rem;margin-bottom:0}
-.chip{border-radius:999px;padding:.3rem .75rem;font-size:.8rem;font-weight:600}
-.chip.web{background:rgba(22,163,74,.2);color:#4ade80;border:1px solid rgba(22,163,74,.35)}
-.chip.api{background:rgba(2,132,199,.2);color:#38bdf8;border:1px solid rgba(2,132,199,.35)}
-.chip.worker{background:rgba(234,88,12,.2);color:#fb923c;border:1px solid rgba(234,88,12,.35)}
-.chip.data{background:rgba(71,85,105,.25);color:#94a3b8;border:1px solid rgba(71,85,105,.4)}
+details summary::before{content:"&#x203A;";font-size:1.15rem;line-height:1;transition:transform .2s;display:inline-block;font-weight:300}
+details[open] summary::before{transform:rotate(90deg)}
+.arch-card{background:var(--bg2);border:1px solid var(--border);border-radius:12px;padding:1.4rem;margin:.9rem 0 .4rem}
+pre{overflow-x:auto;border-radius:8px;padding:1rem;background:rgba(0,0,0,.3);border:1px solid var(--border);font-size:.8rem;color:var(--label);line-height:1.7}
+.chip-row{display:flex;flex-wrap:wrap;gap:.45rem;margin-top:.8rem}
+.chip{border-radius:999px;padding:.23rem .68rem;font-size:.73rem;font-weight:600}
+.chip.web{background:rgba(22,163,74,.14);color:#4ade80;border:1px solid rgba(22,163,74,.24)}
+.chip.api{background:rgba(2,132,199,.14);color:#38bdf8;border:1px solid rgba(2,132,199,.24)}
+.chip.worker{background:rgba(234,88,12,.14);color:#fb923c;border:1px solid rgba(234,88,12,.24)}
+.chip.data{background:rgba(71,85,105,.18);color:var(--label);border:1px solid rgba(71,85,105,.32)}
+
 /* FOOTER */
-footer{background:var(--navy);border-top:1px solid var(--border);padding:2.5rem 2rem;text-align:center;color:var(--muted);font-size:.85rem}
-footer a{color:var(--blue-l);text-decoration:none}
-footer a:hover{text-decoration:underline}
+footer{background:var(--bg2);border-top:1px solid var(--border);padding:2.25rem 2.5rem;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:1rem}
+.footer-brand{font-size:.84rem;color:var(--muted);font-weight:500}
+.footer-links{display:flex;gap:1.4rem;list-style:none}
+.footer-links a{color:var(--muted);text-decoration:none;font-size:.8rem;transition:color .15s}
+.footer-links a:hover{color:var(--label)}
+
 /* RESPONSIVE */
-@media(max-width:768px){
-  nav{padding:.8rem 1rem}
-  .nav-links{display:none}
-  .opp-grid,.gap-bars,.margins-compare{grid-template-columns:1fr}
-  .stat-strip{grid-template-columns:1fr 1fr}
-  .stat-item{border-right:none;border-bottom:1px solid var(--border)}
-  .stat-item:nth-child(odd){border-right:1px solid var(--border)}
+@media(max-width:980px){
+  .what-grid{grid-template-columns:1fr 1fr}
+  .how-steps{grid-template-columns:1fr 1fr}
+  .how-step:nth-child(3n),.how-step:nth-child(3){border-right:1px solid var(--border)}
+  .how-step:nth-child(2n){border-right:none}
+  .how-step:nth-child(4),.how-step:nth-child(5),.how-step:nth-child(6){border-bottom:1px solid var(--border)}
+  .how-step:nth-child(5),.how-step:nth-child(6){border-bottom:none}
+  .who-layout,.own-grid{grid-template-columns:1fr}
+  .diff-section{overflow-x:auto}
+  .diff-table{min-width:600px}
+}
+@media(max-width:640px){
+  nav{padding:.75rem 1.1rem}
+  .nav-links,.nav-actions .btn-sm-ghost{display:none}
+  .hero{padding:5rem 1.5rem 4rem}
+  .hero h1{font-size:2.1rem}
+  .what-grid,.how-steps{grid-template-columns:1fr}
+  .how-step{border-right:none !important;border-bottom:1px solid var(--border) !important}
+  .how-step:last-child{border-bottom:none !important}
+  .stack-grid{grid-template-columns:1fr 1fr}
+  .container{padding:0 1.25rem}
 }
 </style>
 <script type="module">
 import mermaid from "https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.esm.min.mjs";
-mermaid.initialize({startOnLoad:true,theme:"dark",themeVariables:{background:"#111d35",primaryColor:"#1e3a8a",primaryTextColor:"#f1f5f9",lineColor:"#334155",secondaryColor:"#1e293b",tertiaryColor:"#0f172a"}});
-document.addEventListener("DOMContentLoaded",()=>{
-  const obs=new IntersectionObserver(e=>{e.forEach(x=>{if(x.isIntersecting){x.target.style.width=x.target.dataset.fill;obs.unobserve(x.target)}})},{threshold:.3});
-  document.querySelectorAll(".gap-bar-fill").forEach(el=>obs.observe(el));
-});
+mermaid.initialize({startOnLoad:true,theme:"dark",themeVariables:{background:"#0c1525",primaryColor:"#1e3a8a",primaryTextColor:"#e2e8f0",lineColor:"#1e3a5f",secondaryColor:"#0c1e3a",tertiaryColor:"#070b14"}});
 </script>
 </head>
 <body>
 
 <!-- NAV -->
 <nav>
-  <div class="nav-logo">Scale<span>Logix</span> AI</div>
+  <a href="#" class="nav-logo">Ai&#x2011;<span>Franchise</span></a>
   <ul class="nav-links">
-    <li><a href="#opportunity">Opportunity</a></li>
-    <li><a href="#proof">Proof</a></li>
-    <li><a href="#get">What You Get</a></li>
-    <li><a href="#invest">Investment</a></li>
-    <li><a href="#system">System Docs</a></li>
+    <li><a href="#what">Platform</a></li>
+    <li><a href="#stack">Stack</a></li>
+    <li><a href="#who">Who It&#x2019;s For</a></li>
+    <li><a href="#model">The Model</a></li>
+    <li><a href="#system">Docs</a></li>
   </ul>
-  <a href="https://start.getscalelogixai.com/" target="_blank" rel="noopener" class="nav-cta">Apply Now &#x2192;</a>
+  <div class="nav-actions">
+    <a href="#what" class="btn-sm-ghost">View Platform</a>
+    <a href="https://start.getscalelogixai.com/" target="_blank" rel="noopener" class="btn-sm">Request Strategy Session</a>
+  </div>
 </nav>
 
 <!-- HERO -->
 <div class="hero">
-  <div class="hero-badge">Limited to 60 Launches Annually</div>
-  <h1>The <span class="accent">AI Services Market</span> Is the Fastest Wealth Transfer in History. Claim Your Share.</h1>
-  <p class="hero-sub">Own 100% of your AI automation agency &#x2014; powered by 4 years of proven infrastructure, $15M+ in verified client revenue, and a system that runs itself.</p>
-  <div class="hero-btns">
-    <a href="https://start.getscalelogixai.com/" target="_blank" rel="noopener" class="btn-primary">Get Started &#x2192;</a>
-    <a href="#opportunity" class="btn-ghost">See the Opportunity</a>
+  <div class="container">
+    <div class="hero-inner">
+      <div class="hero-tag">White-Label AI Operating System</div>
+      <h1>Launch a Branded AI Service Business on <em>Infrastructure Built to Sell, Operate, and Scale.</em></h1>
+      <p class="hero-sub">We provide the operating system, workflows, automation stack, and deployment framework so you can launch faster, serve clients better, and retain full ownership of the business you are building.</p>
+      <div class="hero-btns">
+        <a href="https://start.getscalelogixai.com/" target="_blank" rel="noopener" class="btn-primary">Request Strategy Session &#x2192;</a>
+        <a href="#what" class="btn-outline">View Platform</a>
+      </div>
+      <div class="hero-meta">
+        <div class="hero-meta-item"><div class="hero-meta-dot"></div>Production-grade infrastructure</div>
+        <div class="hero-meta-item"><div class="hero-meta-dot"></div>You own your brand, clients, and data</div>
+        <div class="hero-meta-item"><div class="hero-meta-dot"></div>Repeatable deployment across verticals</div>
+      </div>
+    </div>
   </div>
 </div>
 
-<!-- STAT STRIP -->
-<div class="stat-strip">
-  <div class="stat-item"><div class="stat-num blue">$1.85T</div><div class="stat-label">Enterprise AI market by 2030</div></div>
-  <div class="stat-item"><div class="stat-num green">50+</div><div class="stat-label">Successful agency launches</div></div>
-  <div class="stat-item"><div class="stat-num gold">$15M+</div><div class="stat-label">Verified client revenue</div></div>
-  <div class="stat-item"><div class="stat-num cyan">45&#x2013;55%</div><div class="stat-label">Net margin (vs 15&#x2013;20% traditional)</div></div>
-  <div class="stat-item"><div class="stat-num blue">2 mo</div><div class="stat-label">ChatGPT to 100M users</div></div>
-</div>
-
-<!-- OPPORTUNITY -->
-<section class="opp" id="opportunity">
+<!-- WHAT IS IT -->
+<section class="what-section" id="what">
   <div class="container">
-    <div class="opp-grid">
-      <div class="opp-copy">
-        <div class="section-tag">The Market Gap</div>
-        <h2 class="section-title">The Adoption Curve Most People Will Miss</h2>
-        <p>The AI services market is experiencing the fastest adoption curve in history. ChatGPT hit 100M users in 2 months &#x2014; Facebook took 4.5 years. The enterprise AI market is exploding from $298B to $1.85T by 2030.</p>
-        <p>91% of enterprises plan to increase AI spending, yet only 12% of SMBs have any AI solutions. SMBs desperately need AI but can't build it themselves. They're paying $5K&#x2013;$15K monthly for AI automation that costs 90% less to deliver through our systems.</p>
-        <p style="font-weight:600;color:var(--text)">That gap is your opportunity &#x2014; and the window is closing.</p>
+    <span class="section-tag">The Platform</span>
+    <h2 class="section-title">A White-Label Operating System&#x2014;<br>Not a Course, Not a Coaching Program</h2>
+    <p class="section-body" style="max-width:640px">This is a complete AI-powered business infrastructure stack that you brand, deploy, and operate as your own company. Three integrated systems. One deployable platform.</p>
+    <div class="what-grid">
+      <div class="what-card">
+        <div class="what-card-num">01</div>
+        <h3>Branded Company Launch Stack</h3>
+        <p>Your domain. Your logo. Your client-facing brand. We deploy the full site, funnel, and intake infrastructure under your identity so you are generating and capturing leads before you hire a single person.</p>
+        <span class="what-card-tag">Brand &#x2022; Web &#x2022; Funnel</span>
       </div>
-      <div class="opp-cards">
-        <div class="opp-card">
-          <div class="opp-card-icon blue">&#x1F4C8;</div>
-          <div><h4>Fastest Adoption Ever Recorded</h4><p>The AI adoption curve dwarfs every previous technology wave &#x2014; internet, mobile, and social combined.</p></div>
-        </div>
-        <div class="opp-card">
-          <div class="opp-card-icon green">&#x1F3E2;</div>
-          <div><h4>SMBs Are Underserved &amp; Overpaying</h4><p>Only 12% of small businesses have any AI. Those that do pay $5K&#x2013;$15K/month for what costs a fraction to deliver.</p></div>
-        </div>
-        <div class="opp-card">
-          <div class="opp-card-icon gold">&#x26A1;</div>
-          <div><h4>First-Mover Advantage Is Now</h4><p>Early franchisees in every sector capture the highest margins. The SMB AI window is open &#x2014; but not forever.</p></div>
-        </div>
+      <div class="what-card">
+        <div class="what-card-num">02</div>
+        <h3>Client Acquisition + Follow-Up Engine</h3>
+        <p>Automated AI messaging, SMS and email sequences, qualification logic, and booking flows that run 24/7. Leads are engaged, qualified, and routed through your pipeline without manual handling at every step.</p>
+        <span class="what-card-tag">CRM &#x2022; AI Messaging &#x2022; Automation</span>
+      </div>
+      <div class="what-card">
+        <div class="what-card-num">03</div>
+        <h3>Delivery + Reporting Operating System</h3>
+        <p>Client portal, campaign dashboards, result reporting, and billing infrastructure. Your clients see their data in a professional interface. You operate from a controlled admin layer with full visibility.</p>
+        <span class="what-card-tag">Portal &#x2022; Analytics &#x2022; Billing</span>
       </div>
     </div>
   </div>
 </section>
 
-<!-- GAP -->
-<section class="gap-section">
+<!-- HOW IT WORKS -->
+<section class="how-section" id="how">
   <div class="container">
-    <div class="section-tag">The Numbers</div>
-    <h2 class="section-title">A Gap This Wide Doesn't Stay Open Long</h2>
-    <div class="gap-bars">
+    <span class="section-tag">System Flow</span>
+    <h2 class="section-title">How the Platform Processes a Lead</h2>
+    <p class="section-body" style="max-width:600px">From first touch to reporting &#x2014; every step is handled by the platform. Your client gets a professional experience. You see every outcome in your dashboard.</p>
+    <div class="how-steps">
+      <div class="how-step">
+        <div class="how-step-num">01</div>
+        <div class="how-step-icon">&#x1F517;</div>
+        <h4>Lead Enters</h4>
+        <p>Via your branded site, funnel, or intake form. Captured, logged, and tagged by source automatically.</p>
+      </div>
+      <div class="how-step">
+        <div class="how-step-num">02</div>
+        <div class="how-step-icon">&#x26A1;</div>
+        <h4>AI Responds in Seconds</h4>
+        <p>On-brand, contextual response via SMS or email before the lead goes cold. No manual trigger required.</p>
+      </div>
+      <div class="how-step">
+        <div class="how-step-num">03</div>
+        <div class="how-step-icon">&#x1F50D;</div>
+        <h4>Qualification Begins</h4>
+        <p>Automated sequence qualifies intent, offer fit, and timeline. Surfaces sales-ready prospects automatically.</p>
+      </div>
+      <div class="how-step">
+        <div class="how-step-num">04</div>
+        <div class="how-step-icon">&#x1F4C5;</div>
+        <h4>Booking or Handoff</h4>
+        <p>Qualified leads book directly into your calendar or route to a sales conversation. Pipeline updates live.</p>
+      </div>
+      <div class="how-step">
+        <div class="how-step-num">05</div>
+        <div class="how-step-icon">&#x1F4CA;</div>
+        <h4>Pipeline Tracks Automatically</h4>
+        <p>Every touchpoint, stage, and outcome is recorded. Full CRM visibility without manual data entry.</p>
+      </div>
+      <div class="how-step">
+        <div class="how-step-num">06</div>
+        <div class="how-step-icon">&#x1F4F1;</div>
+        <h4>Client Dashboard Goes Live</h4>
+        <p>Your client sees campaign results, lead volume, and reporting in their dedicated branded portal.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- STACK -->
+<section class="stack-section" id="stack">
+  <div class="container">
+    <span class="section-tag">What&#x2019;s Included</span>
+    <h2 class="section-title">The Full Capability Stack</h2>
+    <p class="section-body" style="max-width:600px">Every component needed to launch, operate, and scale a professional AI service business. Nothing left out. Nothing to custom-build before going to market.</p>
+    <div class="stack-grid">
+      <div class="stack-item">
+        <div class="stack-item-icon">&#x1F310;</div>
+        <h4>Branded Website + Funnel</h4>
+        <p>Your domain, your brand, deployed on production infrastructure from day one.</p>
+      </div>
+      <div class="stack-item">
+        <div class="stack-item-icon">&#x1F4CB;</div>
+        <h4>CRM + Pipeline</h4>
+        <p>Lead tracking, stage management, and deal flow visibility in a single managed interface.</p>
+      </div>
+      <div class="stack-item">
+        <div class="stack-item-icon">&#x1F4AC;</div>
+        <h4>AI Messaging Engine</h4>
+        <p>SMS and email automation powered by AI. Brand-consistent, context-aware, continuously running.</p>
+      </div>
+      <div class="stack-item">
+        <div class="stack-item-icon">&#x2699;&#xFE0F;</div>
+        <h4>Workflow Automations</h4>
+        <p>Trigger-based logic that handles routing, follow-up, tagging, and pipeline movement.</p>
+      </div>
+      <div class="stack-item">
+        <div class="stack-item-icon">&#x1F5A5;&#xFE0F;</div>
+        <h4>Client Portal</h4>
+        <p>A dedicated reporting interface for each client. Professional, branded, and always current.</p>
+      </div>
+      <div class="stack-item">
+        <div class="stack-item-icon">&#x1F4C8;</div>
+        <h4>Analytics + Reporting</h4>
+        <p>Campaign performance, lead volume, response rates, and conversion data surfaced automatically.</p>
+      </div>
+      <div class="stack-item">
+        <div class="stack-item-icon">&#x1F4B3;</div>
+        <h4>Billing + Subscriptions</h4>
+        <p>Stripe-integrated billing. Collect retainers, one-time fees, and manage client renewals cleanly.</p>
+      </div>
+      <div class="stack-item">
+        <div class="stack-item-icon">&#x1F4DD;</div>
+        <h4>Onboarding Playbooks</h4>
+        <p>Repeatable client intake templates for consistent, professional delivery from the first engagement.</p>
+      </div>
+      <div class="stack-item">
+        <div class="stack-item-icon">&#x1F3AF;</div>
+        <h4>Vertical Packs</h4>
+        <p>Pre-built campaign templates, messaging flows, and automations by niche. Deploy in days, not months.</p>
+      </div>
+      <div class="stack-item">
+        <div class="stack-item-icon">&#x1F6E1;&#xFE0F;</div>
+        <h4>Operator Controls</h4>
+        <p>Admin dashboard, user permissions, and configuration layer. Your platform, your operational rules.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- WHO IT'S FOR -->
+<section class="who-section" id="who">
+  <div class="container">
+    <div class="who-layout">
       <div>
-        <div class="gap-bar-label"><span>Enterprises increasing AI spend</span><span style="color:var(--blue-l)">91%</span></div>
-        <div class="gap-bar-track"><div class="gap-bar-fill" data-fill="91%" style="background:linear-gradient(90deg,#2563eb,#06b6d4)"></div></div>
-        <div class="gap-caption">Of enterprises plan to increase AI investment this year</div>
+        <span class="section-tag">Who This Is For</span>
+        <h2 class="section-title">Built for Operators.<br>Not for Passive Investors.</h2>
+        <p class="section-body" style="margin-bottom:2rem;max-width:480px">This is designed for people who want to build and run a real services business &#x2014; not receive returns from one someone else operates. You are the operator. This gives you the infrastructure to do it well.</p>
+        <div class="who-list">
+          <div class="who-item">
+            <div class="who-check">&#x2713;</div>
+            <div><h4>Operators Scaling Into AI Services</h4><p>Existing business owners adding AI-powered service lines to their current operation.</p></div>
+          </div>
+          <div class="who-item">
+            <div class="who-check">&#x2713;</div>
+            <div><h4>Founders Launching Niche AI Brands</h4><p>Builders entering a specific vertical with a branded AI services company of their own.</p></div>
+          </div>
+          <div class="who-item">
+            <div class="who-check">&#x2713;</div>
+            <div><h4>Agencies Adding AI as a Product Line</h4><p>Marketing, digital, or consulting firms expanding their offer with AI automation services.</p></div>
+          </div>
+          <div class="who-item">
+            <div class="who-check">&#x2713;</div>
+            <div><h4>Consultants Systematizing Their Offer</h4><p>Independent operators turning deep expertise into a repeatable, scalable service product.</p></div>
+          </div>
+          <div class="who-item">
+            <div class="who-check">&#x2713;</div>
+            <div><h4>Firms Launching Vertical Service Brands</h4><p>Teams building dedicated AI service companies for healthcare, legal, real estate, or other niches.</p></div>
+          </div>
+        </div>
+        <div class="who-not">
+          <strong>Not the right fit:</strong> If you are looking for a passive investment that generates returns without active business ownership and ongoing operational effort, this is not what we offer. Results depend directly on niche selection, offer, sales approach, and your operational execution.
+        </div>
       </div>
       <div>
-        <div class="gap-bar-label"><span>SMBs with any AI solution</span><span style="color:var(--gold)">12%</span></div>
-        <div class="gap-bar-track"><div class="gap-bar-fill" data-fill="12%" style="background:linear-gradient(90deg,#f59e0b,#ef4444)"></div></div>
-        <div class="gap-caption">Of small businesses have adopted any AI solution today</div>
+        <span class="section-tag">Platform Economics</span>
+        <h2 class="section-title" style="font-size:1.65rem;margin-bottom:1.5rem">What Makes the Model Work</h2>
+        <p class="section-body" style="margin-bottom:2rem">AI-enabled service delivery costs a fraction of traditional agency fulfilment. That structural cost gap translates directly to operating margin for serious operators.</p>
+        <div class="margin-block theirs">
+          <div class="m-tag">Traditional Agency Model</div>
+          <div class="m-pct">15&#x2013;20%</div>
+          <p>Net margin after staff, tools, and overhead costs</p>
+        </div>
+        <div class="margin-block ours">
+          <div class="m-tag">AI-Powered Service Model</div>
+          <div class="m-pct">45&#x2013;55%</div>
+          <p>Net margin when AI handles the delivery layer</p>
+        </div>
+        <p class="margin-note">Margin figures are estimates from operating partners. Actual results depend on market, pricing, sales mix, and operational discipline. No earnings are guaranteed or implied.</p>
       </div>
     </div>
-    <div class="gap-callout">
-      <p>The 79-point gap between enterprise demand and SMB adoption is your <span>distribution advantage</span>. ScaleLogix turns that gap into recurring revenue.</p>
-    </div>
   </div>
 </section>
 
-<!-- PROOF -->
-<section class="proof" id="proof">
+<!-- DIFFERENTIATION -->
+<section class="diff-section" id="model">
   <div class="container">
-    <div class="section-tag">Track Record</div>
-    <h2 class="section-title">Four Years. Real Numbers. Real Results.</h2>
-    <p class="section-sub">ScaleLogix has spent 4+ years building the infrastructure to capture this market &#x2014; not pitching and building at the same time.</p>
-    <div class="proof-grid">
-      <div class="proof-card"><div class="check">&#x2713;</div><h3>50+</h3><p>Successful agency launches across multiple verticals and markets worldwide</p></div>
-      <div class="proof-card"><div class="check">&#x2713;</div><h3>$15M+</h3><p>In verified client revenue generated through the ScaleLogix system</p></div>
-      <div class="proof-card"><div class="check">&#x2713;</div><h3>3-Year</h3><p>Refined B2B database &#x2014; not a cold list, a warm prospecting engine</p></div>
-      <div class="proof-card"><div class="check">&#x2713;</div><h3>Proven</h3><p>Sales and fulfillment systems that work without requiring technical expertise</p></div>
-    </div>
-  </div>
-</section>
-
-<!-- WHAT YOU GET -->
-<section class="get-section" id="get">
-  <div class="container">
-    <div class="section-tag">The System</div>
-    <h2 class="section-title">Everything You Need to Launch. Nothing You Don't.</h2>
-    <p class="section-sub">We provide the tech, team, and proven templates. You provide the working capital and own 100% of your agency.</p>
-    <div class="get-grid">
-      <div class="get-card"><div class="get-card-num">01 &#x2014; TECHNOLOGY</div><h3>Full AI Automation Stack</h3><p>White-labelled AI tools for lead intake, conversation automation, appointment setting, and client reporting &#x2014; all pre-built.</p></div>
-      <div class="get-card"><div class="get-card-num">02 &#x2014; SALES</div><h3>Proven Sales Playbook</h3><p>Cold-to-close scripts, objection handling, pricing models, and proposal templates refined across 50+ real launches.</p></div>
-      <div class="get-card"><div class="get-card-num">03 &#x2014; FULFILLMENT</div><h3>Done-For-You Delivery</h3><p>Client onboarding sequences, campaign templates, and delivery SOPs so you fulfil without building anything from scratch.</p></div>
-      <div class="get-card"><div class="get-card-num">04 &#x2014; DATABASE</div><h3>3-Year B2B Prospecting Engine</h3><p>A refined database of pre-qualified SMB buyers &#x2014; not a rented list, but a continuously updated prospecting system.</p></div>
-      <div class="get-card"><div class="get-card-num">05 &#x2014; TEAM</div><h3>Operator Support Network</h3><p>Weekly calls, direct support, and access to the community of operators running this system at scale.</p></div>
-      <div class="get-card"><div class="get-card-num">06 &#x2014; OWNERSHIP</div><h3>100% Yours</h3><p>You own your agency outright. No royalties, no revenue share on client fees. We earn on setup; you keep what you build.</p></div>
-    </div>
-  </div>
-</section>
-
-<!-- MARGINS -->
-<section class="margins">
-  <div class="container">
-    <div class="section-tag">The Economics</div>
-    <h2 class="section-title">Margins That Make Traditional Agencies Look Broken</h2>
-    <div class="margins-compare">
-      <div class="margin-card theirs"><div class="tag">Traditional Agency</div><div class="pct">15&#x2013;20%</div><p>Net margin &#x2014; after staff, tools, overhead, and churn</p></div>
-      <div class="margin-card ours"><div class="tag">ScaleLogix AI Agency</div><div class="pct">45&#x2013;55%</div><p>Net margin &#x2014; AI delivers results at 90% lower cost than manual fulfilment</p></div>
-    </div>
-  </div>
-</section>
-
-<!-- INVESTMENT -->
-<section class="invest" id="invest">
-  <div class="container">
-    <div style="text-align:center;max-width:600px;margin:0 auto">
-      <div class="section-tag">The Numbers</div>
-      <h2 class="section-title">Simple Math. Clear ROI.</h2>
-      <p class="section-sub">We're operators, not a fund. Our expertise is building and running; yours is capital deployment.</p>
-    </div>
-    <div class="invest-card">
-      <div class="invest-header"><h3>Launch Economics</h3><p>Per agency partner &#x2014; you own 100% of what you build</p></div>
-      <div class="invest-body">
-        <div class="invest-row"><span>Setup investment range</span><span>$17,500 &#x2013; $34,000</span></div>
-        <div class="invest-row"><span>Working capital required</span><span>Varies by market</span></div>
-        <div class="invest-row"><span>Average client monthly retainer</span><span>$2,500 &#x2013; $8,000</span></div>
-        <div class="invest-row"><span>Net margin on revenue</span><span style="color:var(--green)">45&#x2013;55%</span></div>
-        <div class="invest-row"><span>Revenue share / royalties</span><span style="color:var(--green)">$0 &#x2014; none</span></div>
-        <div class="invest-row"><span>Annual launch capacity</span><span style="color:var(--gold)">60 worldwide (limited)</span></div>
+    <span class="section-tag">Why This Model</span>
+    <h2 class="section-title">Infrastructure-First.<br>Not Course-First.</h2>
+    <p class="section-body" style="max-width:580px;margin-bottom:3rem">A great deal of what exists in this market teaches you how to sell AI services. This gives you the operating stack to actually deliver them at scale and at margin. Those are different things.</p>
+    <div class="diff-table">
+      <div class="diff-header">
+        <div>Dimension</div>
+        <div>Course or Coaching Model</div>
+        <div class="ours-col">Ai-Franchise Platform</div>
       </div>
-      <div class="invest-note">This is a capital partnership, not a franchise fee model. You own your book of business outright.</div>
+      <div class="diff-row">
+        <div class="dim-col">What you receive</div>
+        <div class="their-col">Training, playbooks, community access</div>
+        <div class="ours-col">Deployed infrastructure, branded stack, live platform</div>
+      </div>
+      <div class="diff-row">
+        <div class="dim-col">Brand ownership</div>
+        <div class="their-col">You build your brand after completing training</div>
+        <div class="ours-col">Your brand is live before your first sales call</div>
+      </div>
+      <div class="diff-row">
+        <div class="dim-col">Client data + relationships</div>
+        <div class="their-col">You own what you build on tools you configure</div>
+        <div class="ours-col">Your CRM, your data, your contracts &#x2014; explicit from day one</div>
+      </div>
+      <div class="diff-row">
+        <div class="dim-col">Delivery infrastructure</div>
+        <div class="their-col">You acquire and configure the tools yourself</div>
+        <div class="ours-col">Messaging, automations, and portal pre-deployed</div>
+      </div>
+      <div class="diff-row">
+        <div class="dim-col">Vertical deployment</div>
+        <div class="their-col">Generic playbooks you adapt for your market</div>
+        <div class="ours-col">Pre-built vertical packs: messaging, flows, campaigns</div>
+      </div>
+      <div class="diff-row">
+        <div class="dim-col">Scaling path</div>
+        <div class="their-col">Re-hire and rebuild for each new vertical</div>
+        <div class="ours-col">Deploy additional instances from existing templates</div>
+      </div>
+      <div class="diff-row">
+        <div class="dim-col">Revenue on your clients</div>
+        <div class="their-col">Varies; some programs take ongoing cuts</div>
+        <div class="ours-col">No royalties. Your client revenue is entirely yours.</div>
+      </div>
     </div>
   </div>
 </section>
 
-<!-- CTA BANNER -->
-<div class="cta-banner">
-  <h2>Ready to Own Your AI Agency?</h2>
-  <p>Apply for one of the 60 available launch slots. First-come, first-qualified. We'll show you exactly what your market looks like before you commit a dollar.</p>
-  <a href="https://start.getscalelogixai.com/" target="_blank" rel="noopener" class="btn-white">Apply at start.getscalelogixai.com &#x2192;</a>
-  <p class="cta-limit">&#x26A0; Launches are limited to 60 annually worldwide to preserve quality and market share</p>
+<!-- OWNERSHIP -->
+<section class="own-section" id="ownership">
+  <div class="container">
+    <div class="own-grid">
+      <div>
+        <span class="section-tag">Ownership Structure</span>
+        <h2 class="section-title">You Own What You Build.</h2>
+        <p class="section-body" style="max-width:420px;margin-bottom:1.5rem">We are explicit about this because it matters. The business you build on this infrastructure is yours. Here is exactly what that means.</p>
+        <div class="own-list">
+          <div class="own-item"><div class="own-item-dot"></div><span>Your brand and domain</span></div>
+          <div class="own-item"><div class="own-item-dot"></div><span>Your client relationships and contracts</span></div>
+          <div class="own-item"><div class="own-item-dot"></div><span>Your CRM data and pipeline</span></div>
+          <div class="own-item"><div class="own-item-dot"></div><span>Your operating workflows and playbooks</span></div>
+          <div class="own-item"><div class="own-item-dot"></div><span>Your campaign analytics and reporting history</span></div>
+          <div class="own-item"><div class="own-item-dot"></div><span>Deployment rights within contract boundaries</span></div>
+        </div>
+      </div>
+      <div class="own-copy">
+        <p>The infrastructure you deploy on belongs to the platform. The business you build on top of it belongs to you. That is the correct and intended structure.</p>
+        <p>Your client relationships are entirely yours. You control your own client contracts, your pricing, and your delivery commitments. We provide the operating system; you operate the business.</p>
+        <p><strong>What this is not:</strong> a passive investment, a franchise in the legal or regulatory sense, or a system that operates without your active ownership and ongoing judgment. Human oversight of all automated systems is required. Sales effort, market selection, and operational discipline are required. This platform amplifies a serious operator &#x2014; it is not a replacement for one.</p>
+        <p>We make no earnings representations, no ROI projections, and no passive income claims. What we represent is that the infrastructure is maintained to production standards and that the system is designed to work when you do the work of running the business.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CTA -->
+<div class="cta-section" id="apply">
+  <div class="container">
+    <div class="cta-inner">
+      <span class="section-tag" style="text-align:center">Ready to Launch</span>
+      <h2>Build Your AI Service Operation on Infrastructure That Already Works.</h2>
+      <p>We&#x2019;ll walk through your market, your vertical, and your specific deployment plan before you make any commitment.</p>
+      <a href="https://start.getscalelogixai.com/" target="_blank" rel="noopener" class="btn-cta">Request Strategy Session &#x2192;</a>
+      <p class="cta-limit">Limited to 60 deployments annually. Qualifying applicants only.</p>
+    </div>
+  </div>
 </div>
 
-<!-- SYSTEM DOCS -->
+<!-- COMPLIANCE -->
+<div class="compliance">
+  <div class="compliance-inner">
+    <strong>Important Disclosure:</strong> This platform provides software infrastructure, workflow templates, implementation support, and operational tooling for independent business operators. It is not a franchise offering under any applicable franchise law, a passive investment vehicle, a securities offering, or an earnings opportunity. No specific income, revenue, margin, or return is guaranteed or implied. Client and operator results depend on market selection, offer quality, sales competency, operational execution, competitive dynamics, and many other factors outside our control. You are launching and operating your own independent business. Consult qualified legal, financial, tax, and business advisors before making any investment or business decision. Human oversight of all automated systems is required at all times.
+  </div>
+</div>
+
+<!-- ARCH DOCS -->
 <section class="arch-section" id="system">
   <div class="container">
-    <div class="section-tag">Internal Reference</div>
+    <span class="section-tag">Developer Reference</span>
     <h2 class="section-title" style="margin-bottom:.5rem">Platform Architecture</h2>
-    <p class="section-sub" style="margin-bottom:2rem">Technical reference for the Ai-Franchise platform stack.</p>
+    <p class="section-body" style="margin-bottom:2.5rem;max-width:520px">Technical documentation for the Ai-Franchise platform stack and system integrations.</p>
 
     <details open>
-      <summary>System Architecture Diagram</summary>
+      <summary>System Architecture Overview</summary>
       <div class="chip-row">
         <span class="chip web">Web Surfaces</span>
         <span class="chip api">API Layer</span>
         <span class="chip worker">Worker Automation</span>
-        <span class="chip data">Data &amp; Infra</span>
+        <span class="chip data">Data + Infra</span>
       </div>
       <div class="arch-card">
         <div class="mermaid">
@@ -353,8 +566,8 @@ flowchart LR
       </div>
     </details>
 
-    <details style="margin-top:1.2rem">
-      <summary>Lead Intake &amp; AI Response Flow</summary>
+    <details>
+      <summary>Lead Intake + AI Response Flow</summary>
       <div class="arch-card">
         <div class="mermaid">
 flowchart TD
@@ -370,8 +583,8 @@ flowchart TD
       </div>
     </details>
 
-    <details style="margin-top:1.2rem">
-      <summary>Billing Flow</summary>
+    <details>
+      <summary>Billing + Subscription Flow</summary>
       <div class="arch-card">
         <div class="mermaid">
 sequenceDiagram
@@ -390,24 +603,26 @@ sequenceDiagram
       </div>
     </details>
 
-    <details style="margin-top:1.2rem">
-      <summary>Service Endpoints</summary>
+    <details>
+      <summary>Service Endpoints (Local Development)</summary>
       <div class="arch-card">
-        <h3>Local Development</h3>
         <pre>Agency Dashboard  ->  http://localhost:3000
 Fastify API       ->  http://localhost:3001
 Client Portal     ->  http://localhost:3002
 Landing Site      ->  http://localhost:3003</pre>
       </div>
     </details>
-
   </div>
 </section>
 
 <!-- FOOTER -->
 <footer>
-  <p style="margin-bottom:.5rem">&#169; 2026 ScaleLogix AI. All rights reserved.</p>
-  <p><a href="https://start.getscalelogixai.com/" target="_blank" rel="noopener">start.getscalelogixai.com</a></p>
+  <div class="footer-brand">Ai&#x2011;Franchise Platform &#x2014; &#x00A9; 2026</div>
+  <ul class="footer-links">
+    <li><a href="https://start.getscalelogixai.com/" target="_blank" rel="noopener">Strategy Session</a></li>
+    <li><a href="#ownership">Ownership</a></li>
+    <li><a href="#system">Docs</a></li>
+  </ul>
 </footer>
 
 </body>
